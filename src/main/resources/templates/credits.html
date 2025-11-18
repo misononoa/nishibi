@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org/">
+
+<head>
+    <title>謝辞</title>
+    <th:block th:replace="~{common::common-head}"></th:block>
+    <style>
+        ul.credits-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul.credits-list>li>h2 {
+            margin-bottom: 0.7rem;
+        }
+
+        ul.credits-list>li>hr {
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>謝辞</h1>
+    <p>
+        このソフトウェアを作成するにあたり利用させて頂いた著作物およびその著作者様に敬意を表し、ここにご紹介させていただきます。
+    </p>
+    <ul class="credits-list">
+        <li>
+            <h2>KHドットフォント</h2>
+            <hr />
+            <div>
+                表示フォントに <a href="http://jikasei.me/font/kh-dotfont/">KHドットフォント</a>秋葉原16(丸ゴシック)を使用しています。<br />
+                Licensed under <a href="https://scripts.sil.org/OFL">SIL Open Font License 1.1</a><br />
+                © Keitarou Hiraki, Font Silo 1990-2015.
+            </div>
+        </li>
+        <li style="font-family: 'M PLUS 1 Code Medium';">
+            <h2>M PLUS Code</h2>
+            <hr />
+            <div>
+                コードブロック表示フォントに <a href="https://mplusfonts.github.io/#mpluscode">M PLUS Code</a>
+                を使用しています。<br />
+                Copyright 2021 The M+ FONTS Project Authors (https://github.com/coz-m/MPLUS_FONTS)
+                This Font Software is licensed under the SIL Open Font License, Version 1.1.
+                This license is copied below, and is also available with a FAQ at:
+                https://scripts.sil.org/OFL
+            </div>
+        </li>
+        <li>
+            <h2>Spring Framework, Spring Boot by VMWare Tanzu</h2>
+            <hr />
+            <div>
+                アプリケーションフレームワークに<a href="https://spring.io/">Spring Framework</a>を使用しています。<br />
+                The Spring Framework is released under version 2.0 of the Apache License.<br />
+                Copyright © 2005 - 2025 Broadcom. All Rights Reserved. The term "Broadcom" refers to Broadcom Inc.
+                and/or its subsidiaries.
+            </div>
+        </li>
+    </ul>
+</body>
+
+</html>

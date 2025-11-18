@@ -1,0 +1,88 @@
+:root {
+    --bgcolor: #f1f5f9;
+    --linkcolor: darkblue;
+    --bordercolor: darkgray;
+}
+
+@font-face {
+    font-family: "KH Dot Akihabara 16";
+    src: url("/KH-Dot-Akihabara-16.ttf");
+}
+
+@font-face {
+    font-family: "M PLUS 1 Code Medium";
+    src: url("/MPLUS1Code-Medium.ttf");
+}
+
+html {
+    background-color: var(--bgcolor);
+    font-family: "KH Dot Akihabara 16", cursive;
+    font-weight: bold;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 70ch;
+    height: 100%;
+    line-height: 1.5;
+}
+
+article {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+hr {
+    color: var(--bordercolor);
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        margin: 3ch;
+    }
+}
+
+a {
+    color: var(--linkcolor);
+    text-decoration: none;
+}
+
+.markdown h1 {
+    font-size: 1.6rem;
+}
+
+.markdown h2 {
+    font-size: 1.5rem;
+}
+
+.markdown h3 {
+    font-size: 1.4rem;
+}
+
+.markdown h4 {
+    font-size: 1.3rem;
+}
+
+.markdown h5 {
+    font-size: 1.2rem;
+}
+
+.markdown h6 {
+    font-size: 1.1rem;
+}
+
+.markdown pre {
+    border-radius: 0.4rem;
+    padding: 0.7rem;
+    background-color: rgb(48, 48, 48);
+    color: white;
+    font-family: 'M PLUS 1 Code Medium';
+    font-size: 1.1rem;
+}
+
+hr {
+    border: none;
+    border-top: 3px dotted var(--bordercolor);
+}

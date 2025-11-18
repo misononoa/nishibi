@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/nishibidb
+    username: nishibi
+    password: nishibi
+  devtools:
+    livereload:
+      enabled: true
+    remote:
+      restart:
+        enabled: true
+  mvc:
+    log-request-details: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: true
+    show-sql: true
+logging:
+  level:
+    web: debug
+
+nishibi:
+  web:
+    rate-limit:
+      limit: 5
+      window: 30
