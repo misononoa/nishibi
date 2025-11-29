@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +33,9 @@ public class PostsController {
     @HxRequest
     @PostMapping(path = "/posts", consumes = MediaType.APPLICATION_JSON_VALUE)
     public FragmentsRendering post(
-            @RequestBody @NonNull PostDTO dto,
+            @RequestBody PostDTO dto,
             Model model,
-            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) @NonNull Pageable pageable) {
+            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
         var post = Post.builder()
                 .text(dto.getText())
                 .postHash(dto.postHash)
@@ -47,7 +46,7 @@ public class PostsController {
         var allPosts = postsService.getPosts(pageable);
         model.addAttribute("posts", allPosts);
         return FragmentsRendering
-                .with("index::post-article")
+                .fragment("index::post-article")
                 .fragment("index::newpost-form")
                 .fragment("index::pager")
                 .build();
@@ -55,7 +54,7 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String get(Model model,
-            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) @NonNull Pageable pageable) {
+            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
         var posts = postsService.getPosts(pageable);
         model.addAttribute("posts", posts);
         return "index";

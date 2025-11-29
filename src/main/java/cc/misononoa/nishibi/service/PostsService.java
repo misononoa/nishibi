@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import cc.misononoa.nishibi.orm.entity.Post;
@@ -21,11 +20,11 @@ public class PostsService {
 
     private final PostRepository repository;
 
-    public Page<Post> getPosts(@NonNull Pageable pageable) {
+    public Page<Post> getPosts(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public Optional<Post> save(@NonNull Post post) {
+    public Optional<Post> save(Post post) {
         try {
             var result = repository.save(post);
             return Optional.of(result);
@@ -34,11 +33,11 @@ public class PostsService {
         }
     }
 
-    public Optional<Post> get(@NonNull UUID id) {
+    public Optional<Post> get(UUID id) {
         return repository.findById(id);
     }
 
-    public Optional<Post> get(@NonNull String id) {
+    public Optional<Post> get(String id) {
         if (!(UUID.fromString(id) instanceof UUID uuid)) {
             var message = "\"%s\" is not valid uuid.".formatted(Objects.toString(id, "null"));
             throw new IllegalArgumentException(message);

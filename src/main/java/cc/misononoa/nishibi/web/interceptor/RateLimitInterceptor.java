@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -32,9 +31,9 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(
-            @NonNull final HttpServletRequest request,
-            @NonNull final HttpServletResponse response,
-            @NonNull final Object handler) {
+            final HttpServletRequest request,
+            final HttpServletResponse response,
+            final Object handler) {
         if (!request.getMethod().equalsIgnoreCase("POST"))
             return true;
 
