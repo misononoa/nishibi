@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.5.7"
+	id("org.springframework.boot") version "4.0.0"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -30,18 +30,24 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("io.github.wimdeblauwe:htmx-spring-boot-thymeleaf:4.0.1")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("io.github.wimdeblauwe:htmx-spring-boot-thymeleaf:5.0.0")
 	implementation("org.apache.commons:commons-lang3")
 	implementation("commons-codec:commons-codec")
 	implementation("org.commonmark:commonmark:0.26.0")
 	implementation("org.commonmark:commonmark-ext-autolink:0.26.0")
 	compileOnly("org.projectlombok:lombok")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	runtimeOnly("org.postgresql:postgresql")
+
+
+	testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-jdbc-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
