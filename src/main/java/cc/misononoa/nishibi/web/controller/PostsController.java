@@ -2,7 +2,7 @@ package cc.misononoa.nishibi.web.controller;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-import java.util.Objects;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -34,19 +34,13 @@ public class PostsController {
     @PostMapping(path = "/posts", consumes = MediaType.APPLICATION_JSON_VALUE)
     public FragmentsRendering post(
             @RequestBody PostDTO dto,
-            Model model,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
-        var post = Post.builder()
-                .text(dto.getText())
-                .postHash(dto.postHash)
-                .build();
-        Objects.requireNonNull(post);
-        postsService.save(post);
+        postsService.save(dto.toPost())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
         var allPosts = postsService.getPosts(pageable);
-        model.addAttribute("posts", allPosts);
         return FragmentsRendering
-                .fragment("index::post-article")
+                .fragment("index::post-article", Map.of("posts", allPosts))
                 .fragment("index::newpost-form")
                 .fragment("index::pager")
                 .build();
@@ -62,20 +56,27 @@ public class PostsController {
 
     @GetMapping("/posts/{abbrevHash}")
     public String get(@PathVariable("abbrevHash") String hash, Model model) {
-        var post = postsService.getByHash(hash);
-        if (post.isPresent()) {
-            model.addAttribute("post", post.get());
-            return "detail";
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "投稿が見つかりません");
+        var post = postsService.getByHash(hash)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        model.addAttribute(post);
+        return "detail";
     }
 
     @Data
     public static class PostDTO {
+
         @NotBlank
         private String text;
+
         @NotBlank
         private String postHash;
+
+        private Post toPost() {
+            return Post.builder()
+                    .text(text)
+                    .postHash(postHash)
+                    .build();
+        }
     }
 
 }

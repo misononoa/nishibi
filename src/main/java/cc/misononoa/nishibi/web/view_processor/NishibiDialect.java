@@ -33,10 +33,10 @@ public class NishibiDialect extends AbstractProcessorDialect {
 
     @Override
     public Set<IProcessor> getProcessors(String dialectPrefix) {
-        return Set.of(new nishibiMdProcessor(dialectPrefix));
+        return Set.of(new NishibiMdProcessor(dialectPrefix));
     }
 
-    class nishibiMdProcessor extends AbstractAttributeTagProcessor {
+    class NishibiMdProcessor extends AbstractAttributeTagProcessor {
 
         // #{abbrevHash}形式の投稿リンクにマッチする正規表現
         private static final Pattern POST_LINK_PATTERN = Pattern.compile(
@@ -45,7 +45,7 @@ public class NishibiDialect extends AbstractProcessorDialect {
         private static final String ATTR_NAME = "render";
         private static final int PRECEDENCE = 10000;
 
-        public nishibiMdProcessor(final String dialectPrefix) {
+        public NishibiMdProcessor(final String dialectPrefix) {
             super(TemplateMode.HTML,
                     dialectPrefix,
                     null,

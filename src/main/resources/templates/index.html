@@ -91,7 +91,7 @@
             <article th:fragment="post-article" th:each="post : ${posts}" class="post-article">
                 <div>
                     <a th:href="@{'/posts/' + ${post.abbrevHash}}" th:text="|#${post.abbrevHash}|"></a>
-                    <span th:text="|@${#temporals.format(post.createdAt, 'yyyy-MM-dd hh:mm:ss')}|"></span>
+                    <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></span>
                 </div>
                 <div class="post-text"
                     nishibi:render="${#strings.length(post.text) gt 120 ? #strings.substring(post.text, 0, 120) + '...' : post.text}">
