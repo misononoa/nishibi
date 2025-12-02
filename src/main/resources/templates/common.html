@@ -6,7 +6,16 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <script src="https://unpkg.com/htmx.org/dist/htmx.js"></script>
     <script src="https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js"></script>
-    <link rel="stylesheet" th:href="@{/global.css}" />
+    <link rel="stylesheet" href="/global.css" />
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <script>
+        document.addEventListener('htmx:configRequest', (event) => {
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            event.detail.headers[csrfHeader] = csrfToken;
+        });
+    </script>
 </th:block>
 
 </html>
