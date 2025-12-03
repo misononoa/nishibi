@@ -17,8 +17,6 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import cc.misononoa.nishibi.web.interceptor.ViewProcessingException;
-
 @Component
 public class NishibiDialect extends AbstractProcessorDialect {
 
