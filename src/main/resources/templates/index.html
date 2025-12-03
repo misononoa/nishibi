@@ -6,20 +6,6 @@
     <title th:text="nishibi-bbs"></title>
     <th:block th:replace="~{common::common-head}" />
     <style>
-        #newpost-form>form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #newpost-form>form>div {
-            flex: 2;
-        }
-
-        #newpost-form textarea[name=text] {
-            width: 100%;
-            min-height: 4rem;
-        }
-
         article.post-article {
             margin: 2.5rem 0;
         }
@@ -57,16 +43,6 @@
         div.post-text>*:first-child {
             margin-top: 0;
         }
-
-        #pager>ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        #pager>ul>li {
-            display: inline;
-            color: var(--linkcolor);
-        }
     </style>
 </head>
 
@@ -99,16 +75,22 @@
             </article>
         </div>
 
-        <aside id="pager" th:fragment="pager" hx-swap-oob="true">
-            <ul>
-                <li th:class="${posts.first} ? 'disabled':''">
-                    <span th:if="${posts.first}">●</span>
-                    <a th:if="${not posts.first}" th:href="@{${'/'}(page=0)}">●</a>
+        <aside>
+            <ul id="pager" th:fragment="pager" hx-swap-oob="true">
+                <li>
+                    <span th:if="${posts.first}">newest</span>
+                    <a th:if="${not posts.first}" th:href="@{${'/'}(page=0)}">newest</a>
+                </li>
+                <li th:if="${posts.hasPrevious()}">
+                    <a th:href="@{/posts(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
                 </li>
                 <li th:text="${posts.number}"></li>
-                <li th:class="${not posts.hasNext()} ? 'disabled':''">
-                    <span th:if="${not posts.hasNext()}">&gt;</span>
-                    <a th:if="${posts.hasNext()}" th:href="@{${'/'}(page=(${posts.number}+1))}">&gt;</a>
+                <li class="current" th:if="${posts.hasNext()}">
+                    <a th:href="@{/posts(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
+                </li>
+                <li>
+                    <span th:if="${posts.last}">oldest</span>
+                    <a th:if="${not posts.last}" th:href="@{/posts(page=${posts.totalPages}-1)}">oldest</a>
                 </li>
             </ul>
         </aside>

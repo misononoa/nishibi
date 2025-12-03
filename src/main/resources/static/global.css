@@ -86,3 +86,38 @@ hr {
     border: none;
     border-top: 3px dotted var(--bordercolor);
 }
+
+/* 投稿フォーム */
+
+#newpost-form>form {
+    display: flex;
+    flex-direction: column;
+}
+
+#newpost-form>form>div {
+    flex: 2;
+}
+
+#newpost-form textarea[name=text] {
+    width: 100%;
+    min-height: 4rem;
+}
+
+/* ページャ */
+
+ul#pager {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul#pager>li {
+    display: inline;
+}
+
+ul#pager>li:first-child {
+    margin-right: 0.8rem;
+}
+
+ul#pager>li:last-child {
+    margin-left: 0.8rem;
+}
