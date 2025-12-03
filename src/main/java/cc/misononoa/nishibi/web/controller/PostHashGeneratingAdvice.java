@@ -14,7 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
-import cc.misononoa.nishibi.common.util.TimeUtils;
+import cc.misononoa.nishibi.util.TimeUtils;
 import cc.misononoa.nishibi.web.controller.PostsController.PostDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -54,14 +54,14 @@ public class PostHashGeneratingAdvice extends RequestBodyAdviceAdapter {
                 request.getHeader("x-forwarded-for")).findFirst()
                 .orElse("");
 
-        var p = "text:" + dto.getText() + ";"
+        var p = "text:" + dto.text() + ";"
                 + "timestamp:" + TimeUtils.nowString() + ";"
                 + "remote:" + reqAddr + ";"
                 + "sessionId:" + getSessionId(session).orElse("none") + ";"
                 + "lastAccessed:" + getLastAccessedTime(session).orElse("none") + ";";
-        dto.setPostHash(DigestUtils.sha1Hex(p));
-
-        return dto;
+        return new PostDTO(
+                DigestUtils.sha1Hex(p),
+                dto.text());
     }
 
     private HttpServletRequest resolveCurrentRequest() {

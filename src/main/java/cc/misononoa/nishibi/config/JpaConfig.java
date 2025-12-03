@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.orm;
+package cc.misononoa.nishibi.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

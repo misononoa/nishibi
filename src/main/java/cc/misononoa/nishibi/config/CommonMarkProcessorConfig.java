@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.web.view_processor;
+package cc.misononoa.nishibi.config;
 
 import java.util.List;
 

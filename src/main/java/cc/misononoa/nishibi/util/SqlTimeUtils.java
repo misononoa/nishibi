@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.common.util;
+package cc.misononoa.nishibi.util;
 
 import java.sql.Date;
 import java.sql.Timestamp;

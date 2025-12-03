@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
-import cc.misononoa.nishibi.orm.entity.Post;
+import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.service.PostsService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -47,7 +46,8 @@ public class PostsController {
     }
 
     @GetMapping("/posts")
-    public String get(Model model,
+    public String get(
+            Model model,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
         var posts = postsService.getPosts(pageable);
         model.addAttribute("posts", posts);
@@ -62,19 +62,13 @@ public class PostsController {
         return "detail";
     }
 
-    @Data
-    public static class PostDTO {
-
-        @NotBlank
-        private String text;
-
-        @NotBlank
-        private String postHash;
-
+    public static record PostDTO(
+            @NotBlank String postHash,
+            @NotBlank String text) {
         private Post toPost() {
             return Post.builder()
-                    .text(text)
-                    .postHash(postHash)
+                    .postHash(this.postHash())
+                    .text(this.text())
                     .build();
         }
     }

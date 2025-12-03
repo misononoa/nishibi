@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import cc.misononoa.nishibi.orm.entity.Post;
+import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.orm.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 

@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import cc.misononoa.nishibi.web.WebConfig.RateLimitProperties;
+import cc.misononoa.nishibi.config.WebConfig.RateLimitProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

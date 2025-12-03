@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.web.view_processor;
+package cc.misononoa.nishibi.web.view;
 
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -16,6 +16,8 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import cc.misononoa.nishibi.web.interceptor.ViewProcessingException;
 
 @Component
 public class NishibiDialect extends AbstractProcessorDialect {
@@ -67,7 +69,7 @@ public class NishibiDialect extends AbstractProcessorDialect {
                     .getExpressionParser(context.getConfiguration())
                     .parseExpression(context, attributeValue);
             if (!(expression.execute(context) instanceof String textContent)) {
-                throw new ProcessingException("テキストの処理に失敗しました");
+                throw new ViewProcessingException("テキストの処理に失敗しました");
             }
 
             var markdownHtml = renderer.render(parser.parse(textContent));

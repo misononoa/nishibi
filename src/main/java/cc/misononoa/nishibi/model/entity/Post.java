@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.orm.entity;
+package cc.misononoa.nishibi.model.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
