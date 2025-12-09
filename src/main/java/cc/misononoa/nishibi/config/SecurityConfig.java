@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
@@ -37,7 +37,9 @@ public class SecurityConfig {
     private final CorsConfigurationProperties corsConfigurationProperties;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity httpSecurity) {
+    SecurityFilterChain filterChain(
+            HttpSecurity httpSecurity,
+            @Qualifier("nishibi-customized") CorsConfigurationSource corsConfigurationSource) {
         final var cspDirectives = "script-src 'self' 'sha256-PywGR6ofLvqaqa9FvJYmWwHVW+dkKubUi+wD5MUKkmE=' https://unpkg.com/;";
         return httpSecurity
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -45,7 +47,7 @@ public class SecurityConfig {
                 .logout(LogoutConfigurer::disable)
                 .rememberMe(RememberMeConfigurer::disable)
                 .authorizeHttpRequests(t -> t.anyRequest().permitAll())
-                .cors(Customizer.withDefaults())
+                .cors(t -> t.configurationSource(corsConfigurationSource))
                 .headers(headers -> headers
                         .frameOptions(FrameOptionsConfig::sameOrigin)
                         .contentSecurityPolicy(csp -> csp.policyDirectives(cspDirectives))
@@ -53,7 +55,7 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
+    @Bean("nishibi-customized")
     CorsConfigurationSource corsConfigurationSource() {
         final var config = new CorsConfiguration();
         if (corsConfigurationProperties.allowedOrigins() instanceof List<String> allowedOrigins) {
