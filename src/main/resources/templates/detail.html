@@ -3,18 +3,18 @@
     xmlns:nishibimd="http://nishibi.misononoa.cc/nishibimd">
 
 <head>
-    <title>nishibi-bbs(bbs.misononoa.cc)</title>
+    <title th:text="#{app.title}"></title>
     <th:block th:replace="~{common::common-head}" />
 </head>
 
 <body>
-    <h1>nishibi-bbs(bbs.misononoa.cc)</h1>
+    <h1 th:text="#{app.title}"></h1>
     <main>
         <article th:fragment="post-detail" id="post-detail" class="post-detail">
             <div th:text="|postHash: ${post.postHash}|"></div>
             <div th:text="|createdAt: ${post.createdAt}|"></div>
             <hr />
-            <div id="post-text" class="markdown" nishibi:render="${post.text}"></div>
+            <div class="post-text" nishibi:render="${post.text}"></div>
         </article>
     </main>
 </body>

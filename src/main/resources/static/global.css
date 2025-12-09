@@ -49,31 +49,31 @@ a {
     text-decoration: none;
 }
 
-.markdown h1 {
+#post-detail>.post-text h1 {
     font-size: 1.6rem;
 }
 
-.markdown h2 {
+#post-detail>.post-text h2 {
     font-size: 1.5rem;
 }
 
-.markdown h3 {
+#post-detail>.post-text h3 {
     font-size: 1.4rem;
 }
 
-.markdown h4 {
+#post-detail>.post-text h4 {
     font-size: 1.3rem;
 }
 
-.markdown h5 {
+#post-detail>.post-text h5 {
     font-size: 1.2rem;
 }
 
-.markdown h6 {
+#post-detail>.post-text h6 {
     font-size: 1.1rem;
 }
 
-.markdown pre {
+#post-detail>.post-text pre {
     border-radius: 0.4rem;
     padding: 0.7rem;
     background-color: rgb(48, 48, 48);
@@ -101,6 +101,45 @@ hr {
 #newpost-form textarea[name=text] {
     width: 100%;
     min-height: 4rem;
+}
+
+/* 投稿一覧 */
+article.post-article {
+    margin: 2.5rem 0;
+}
+
+article.post-article>.post-text>h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0.5rem 0;
+}
+
+article.post-article>.post-text>h1 {
+    font-size: 1.2rem;
+}
+
+article.post-article>.post-text>h2 {
+    font-size: 1.15rem;
+}
+
+article.post-article>.post-text>h3 {
+    font-size: 1.1rem;
+}
+
+article.post-article>.post-text>h4 {
+    font-size: 1.05rem;
+}
+
+article.post-article>.post-text>h5,
+h6 {
+    font-size: 1rem;
+}
+
+article.post-article>.post-text>*:first-child {
+    margin-top: 0;
 }
 
 /* ページャ */

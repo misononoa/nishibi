@@ -3,51 +3,12 @@
     xmlns:nishibi="http://nishibi.misononoa.cc/nishibi">
 
 <head>
-    <title th:text="nishibi-bbs"></title>
+    <title th:text="#{app.title}"></title>
     <th:block th:replace="~{common::common-head}" />
-    <style>
-        article.post-article {
-            margin: 2.5rem 0;
-        }
-
-        div.post-text>h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin: 0.5rem 0;
-        }
-
-        div.post-text>h1 {
-            font-size: 1.2rem;
-        }
-
-        div.post-text>h2 {
-            font-size: 1.15rem;
-        }
-
-        div.post-text>h3 {
-            font-size: 1.1rem;
-        }
-
-        div.post-text>h4 {
-            font-size: 1.05rem;
-        }
-
-        div.post-text>h5,
-        h6 {
-            font-size: 1rem;
-        }
-
-        div.post-text>*:first-child {
-            margin-top: 0;
-        }
-    </style>
 </head>
 
 <body>
-    <h1 th:text="nishibi-bbs"></h1>
+    <h1 th:text="#{app.title}"></h1>
     <main>
 
         <div id="newpost-form" th:fragment="newpost-form" hx-swap-oob="true">
@@ -79,7 +40,7 @@
             <ul id="pager" th:fragment="pager" hx-swap-oob="true">
                 <li>
                     <span th:if="${posts.first}">newest</span>
-                    <a th:if="${not posts.first}" th:href="@{${'/'}(page=0)}">newest</a>
+                    <a th:if="${not posts.first}" th:href="@{/posts(page=0)}">newest</a>
                 </li>
                 <li th:if="${posts.hasPrevious()}">
                     <a th:href="@{/posts(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>

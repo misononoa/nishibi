@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/global.css" />
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <script>
+    <script integrity="sha256-PywGR6ofLvqaqa9FvJYmWwHVW+dkKubUi+wD5MUKkmE=">
         document.addEventListener('htmx:configRequest', (event) => {
             const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
             const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
