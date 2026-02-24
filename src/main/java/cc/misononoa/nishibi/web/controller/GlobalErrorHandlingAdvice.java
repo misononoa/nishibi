@@ -3,7 +3,6 @@ package cc.misononoa.nishibi.web.controller;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +15,7 @@ public class GlobalErrorHandlingAdvice {
     @ExceptionHandler(RuntimeException.class)
     public String handleInternalServerError(RuntimeException ex, Model model) {
         var rse = new ResponseStatusException(
-                HttpStatusCode.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                HttpStatus.INTERNAL_SERVER_ERROR,
                 Optional.ofNullable(ex.getMessage()).orElse("内部エラーです。ごめんね。"),
                 ex);
         return handleErrorResponse(rse, model);
@@ -25,7 +24,7 @@ public class GlobalErrorHandlingAdvice {
     @ExceptionHandler(NoResourceFoundException.class)
     public String handleNoResourceFoundError(NoResourceFoundException ex, Model model) {
         var rse = new ResponseStatusException(
-                HttpStatusCode.valueOf(HttpStatus.NOT_FOUND.value()),
+                HttpStatus.NOT_FOUND,
                 "ないよ",
                 ex);
         return handleErrorResponse(rse, model);
