@@ -7,16 +7,58 @@
     <th:block th:replace="~{common::common-head}" />
 </head>
 
+<style>
+    aside.relations {
+        margin-top: 2rem;
+    }
+
+    article.related-post {
+        border-color: var(--bordercolor);
+        border-left-style: dotted;
+        border-left-width: 3px;
+    }
+
+    article.related-post>div {
+        margin-left: 0.4rem;
+    }
+
+    article.related-post>hr {
+        margin: 3px 0;
+        border-top-style: none;
+    }
+</style>
+
 <body>
     <h1 th:text="#{app.title}"></h1>
     <main>
         <article th:fragment="post-detail" id="post-detail" class="post-detail">
-            <div th:text="|postHash: ${post.postHash}|"></div>
-            <div th:text="|createdAt: ${post.createdAt}|"></div>
-            <hr />
+            <div class="post-header">
+                <div th:text="|postHash: ${post.postHash}|"></div>
+                <div th:text="|createdAt: ${post.createdAt}|"></div>
+            </div>
+            <hr>
             <div class="post-text" nishibi:render="${post.text}"></div>
         </article>
     </main>
+    <aside class="relations" th:if="${!post.postRelations.isEmpty()}">
+        <h2>
+            <span style="font-size: 80%;">relations</span>
+        </h2>
+        <article class="related-post" th:each="relation : ${post.postRelations}"
+            th:with="relatedPost=${relation.relatedPost}">
+            <div>
+                <a th:href="@{'/posts/' + ${relatedPost.abbrevHash}}" th:text="|#${relatedPost.abbrevHash}|"></a>
+                <span th:text="${#temporals.format(relatedPost.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></span>
+            </div>
+            <hr>
+            <div
+                th:text="${#strings.length(relatedPost.text) gt 120 ? #strings.substring(relatedPost.text, 0, 120) + '...' : relatedPost.text}">
+            </div>
+        </article>
+    </aside>
+    <footer>
+        <div><a href="/">&lt;&nbsp;top</a></div>
+    </footer>
 </body>
 
 </html>

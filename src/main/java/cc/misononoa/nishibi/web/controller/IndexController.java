@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cc.misononoa.nishibi.service.PostsService;
+import cc.misononoa.nishibi.service.PostService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class IndexController {
 
-    private final PostsService postsService;
+    private final PostService postsService;
 
     @GetMapping
     public String index(Model model) {

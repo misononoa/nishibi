@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,21 +21,21 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
 import cc.misononoa.nishibi.model.entity.Post;
-import cc.misononoa.nishibi.service.PostsService;
+import cc.misononoa.nishibi.service.PostService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class PostsController {
+public class PostController {
 
-    private final PostsService postsService;
+    private final PostService postsService;
 
     @HxRequest
     @PostMapping(path = "/posts", consumes = MediaType.APPLICATION_JSON_VALUE)
     public FragmentsRendering post(
-            @RequestBody PostDTO dto,
+            @RequestBody @Validated PostDTO dto,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
         postsService.save(dto.toPost())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -43,6 +46,16 @@ public class PostsController {
                 .fragment("index::newpost-form")
                 .fragment("index::pager")
                 .build();
+    }
+
+    @ExceptionHandler(BindException.class)
+    public FragmentsRendering handleValidationError(BindException ex, Model model) {
+        model.addAttribute("errorTitle", "入力エラーだよ");
+        var fieldErrors = ex.getFieldErrors().stream()
+                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
+                .toList();
+        model.addAttribute("fieldErrors", fieldErrors);
+        return FragmentsRendering.fragment("index::error").build();
     }
 
     @GetMapping("/posts")

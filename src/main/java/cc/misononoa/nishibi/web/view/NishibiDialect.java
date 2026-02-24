@@ -1,7 +1,6 @@
 package cc.misononoa.nishibi.web.view;
 
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -16,6 +15,8 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
 import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import cc.misononoa.nishibi.util.PostHashUtils;
 
 @Component
 public class NishibiDialect extends AbstractProcessorDialect {
@@ -37,10 +38,6 @@ public class NishibiDialect extends AbstractProcessorDialect {
     }
 
     class NishibiMdProcessor extends AbstractAttributeTagProcessor {
-
-        // #{abbrevHash}形式の投稿リンクにマッチする正規表現
-        private static final Pattern POST_LINK_PATTERN = Pattern.compile(
-                "#(\\w{7,40})(?=\\s|<|$|[、。！？])");
 
         private static final String ATTR_NAME = "render";
         private static final int PRECEDENCE = 10000;
@@ -78,7 +75,7 @@ public class NishibiDialect extends AbstractProcessorDialect {
         }
 
         private String processPostLinks(String html) {
-            var matcher = POST_LINK_PATTERN.matcher(html);
+            var matcher = PostHashUtils.getMatcher(html);
             var result = new StringBuilder();
 
             while (matcher.find()) {

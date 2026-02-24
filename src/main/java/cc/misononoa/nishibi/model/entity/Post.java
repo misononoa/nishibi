@@ -1,6 +1,7 @@
 package cc.misononoa.nishibi.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,5 +59,8 @@ public class Post {
     @NotEmpty
     @Column(nullable = false, columnDefinition = "text")
     public String text;
+
+    @OneToMany(mappedBy = "post")
+    public List<PostRelation> postRelations;
 
 }

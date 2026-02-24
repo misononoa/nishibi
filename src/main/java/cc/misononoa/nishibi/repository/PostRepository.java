@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.orm.repository;
+package cc.misononoa.nishibi.repository;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,13 +12,13 @@ import cc.misononoa.nishibi.model.entity.Post;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
     @Query("""
-                select p
-                from Post p
-                where
-                    p.postHash like :hash || '%'
-                order by
-                    p.createdAt desc
-                limit 1
+            select p
+            from Post p
+            where
+                p.postHash like :hash || '%'
+            order by
+                p.createdAt desc
+            limit 1
             """)
     Optional<Post> findByAbbrevHash(@Param("hash") String abbrevHash);
 

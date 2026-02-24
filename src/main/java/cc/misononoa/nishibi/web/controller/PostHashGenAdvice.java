@@ -1,10 +1,9 @@
 package cc.misononoa.nishibi.web.controller;
 
 import java.lang.reflect.Type;
-import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -14,14 +13,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
-import cc.misononoa.nishibi.util.TimeUtils;
-import cc.misononoa.nishibi.web.controller.PostsController.PostDTO;
+import cc.misononoa.nishibi.util.PostHashUtils;
+import cc.misononoa.nishibi.web.controller.PostController.PostDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Component
 @ControllerAdvice
-public class PostHashGeneratingAdvice extends RequestBodyAdviceAdapter {
+public class PostHashGenAdvice extends RequestBodyAdviceAdapter {
 
     @Override
     public boolean supports(
@@ -41,27 +39,23 @@ public class PostHashGeneratingAdvice extends RequestBodyAdviceAdapter {
             MethodParameter parameter,
             Type targetType,
             Class<? extends HttpMessageConverter<?>> converterType) {
-        if (!(body instanceof PostDTO dto))
+        if (!(body instanceof final PostDTO dto))
             return body;
-        if (!(resolveCurrentRequest() instanceof HttpServletRequest request))
+        if (!(resolveCurrentRequest() instanceof final HttpServletRequest request))
             return body;
 
-        final var session = request.getSession();
-
-        final var reqAddr = Stream.of(
+        final var remoteAddress = Stream.of(
                 request.getRemoteAddr(),
                 request.getHeader("X-Forwarded-For"),
-                request.getHeader("x-forwarded-for")).findFirst()
+                request.getHeader("x-forwarded-for"))
+                .filter(StringUtils::isNotBlank)
+                .findFirst()
                 .orElse("");
-
-        var p = "text:" + dto.text() + ";"
-                + "timestamp:" + TimeUtils.nowString() + ";"
-                + "remote:" + reqAddr + ";"
-                + "sessionId:" + getSessionId(session).orElse("none") + ";"
-                + "lastAccessed:" + getLastAccessedTime(session).orElse("none") + ";";
-        return new PostDTO(
-                DigestUtils.sha1Hex(p),
-                dto.text());
+        final var postHash = PostHashUtils.generate(
+                dto.text(),
+                remoteAddress,
+                request.getSession().getId());
+        return new PostDTO(postHash, dto.text());
     }
 
     private HttpServletRequest resolveCurrentRequest() {
@@ -73,23 +67,6 @@ public class PostHashGeneratingAdvice extends RequestBodyAdviceAdapter {
         } catch (Throwable t) {
         }
         return null;
-    }
-
-    private static Optional<String> getSessionId(HttpSession session) {
-        try {
-            return Optional.of(session.getId());
-        } catch (IllegalStateException ex) {
-            return Optional.empty();
-        }
-    }
-
-    private static Optional<String> getLastAccessedTime(HttpSession session) {
-        try {
-            long lastAccessed = session.getLastAccessedTime();
-            return Optional.of(TimeUtils.epochMilliToString(lastAccessed));
-        } catch (IllegalStateException ex) {
-            return Optional.empty();
-        }
     }
 
 }
