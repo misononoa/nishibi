@@ -84,7 +84,7 @@ public class NishibiDialect extends AbstractProcessorDialect {
                 }
 
                 var link = String.format(
-                        "<a href=\"/posts/%s\" class=\"post-quote-link\">#%s</a>",
+                        "<a href=\"/post/%s\" class=\"post-quote-link\">#%s</a>",
                         HtmlUtils.htmlEscape(abbrevHash),
                         HtmlUtils.htmlEscape(abbrevHash));
 

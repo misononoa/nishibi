@@ -29,7 +29,7 @@
         <div id="post-list" hx-swap="outerHTML">
             <article th:fragment="post-article" th:each="post : ${posts}" class="post-article">
                 <div>
-                    <a th:href="@{'/posts/' + ${post.abbrevHash}}" th:text="|#${post.abbrevHash}|"></a>
+                    <a th:href="@{'/post/' + ${post.abbrevHash}}" th:text="|#${post.abbrevHash}|"></a>
                     <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></span>
                 </div>
                 <div class="post-text"
@@ -43,18 +43,18 @@
             <ul id="pager" th:fragment="pager" hx-swap-oob="true">
                 <li>
                     <span th:if="${posts.first}">newest</span>
-                    <a th:if="${not posts.first}" th:href="@{/posts(page=0)}">newest</a>
+                    <a th:if="${not posts.first}" th:href="@{/post(page=0)}">newest</a>
                 </li>
                 <li th:if="${posts.hasPrevious()}">
-                    <a th:href="@{/posts(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
+                    <a th:href="@{/post(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
                 </li>
                 <li th:text="${posts.number}"></li>
                 <li class="current" th:if="${posts.hasNext()}">
-                    <a th:href="@{/posts(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
+                    <a th:href="@{/post(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
                 </li>
                 <li>
                     <span th:if="${posts.last}">oldest</span>
-                    <a th:if="${not posts.last}" th:href="@{/posts(page=${posts.totalPages}-1)}">oldest</a>
+                    <a th:if="${not posts.last}" th:href="@{/post(page=${posts.totalPages}-1)}">oldest</a>
                 </li>
             </ul>
         </aside>

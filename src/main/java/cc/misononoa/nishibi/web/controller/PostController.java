@@ -56,7 +56,7 @@ public class PostController {
         return FragmentsRendering.fragment("index::post-form").build();
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/post")
     public String get(
             Model model,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
@@ -65,7 +65,7 @@ public class PostController {
         return "index";
     }
 
-    @GetMapping("/posts/{abbrevHash}")
+    @GetMapping("/post/{abbrevHash}")
     public String get(@PathVariable("abbrevHash") String hash, Model model) {
         var post = postsService.getByHash(hash)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
