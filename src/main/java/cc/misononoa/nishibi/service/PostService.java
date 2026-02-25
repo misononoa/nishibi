@@ -15,6 +15,7 @@ import cc.misononoa.nishibi.model.entity.PostRelation;
 import cc.misononoa.nishibi.repository.PostRelationRepository;
 import cc.misononoa.nishibi.repository.PostRepository;
 import cc.misononoa.nishibi.util.PostHashUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class PostService {
         return postRepository.findAll(pageable);
     }
 
+    @Transactional
     public Optional<Post> save(Post post) {
         try {
             var result = postRepository.save(post);
@@ -40,10 +42,8 @@ public class PostService {
 
     private void savePostRelation(Post post) {
         // 一応再登録にする
-        if (!post.getPostRelations().isEmpty()) {
-            post.getPostRelations().stream()
-                    .forEach(relationRepository::delete);
-        }
+        relationRepository.findByRelatedPost(post).stream()
+                .forEach(relationRepository::delete);
         PostHashUtils.extract(post.getText()).stream()
                 .map(this::getByHash)
                 .flatMap(Optional::stream)
