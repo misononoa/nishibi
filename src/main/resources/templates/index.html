@@ -11,11 +11,13 @@
     <h1 th:text="#{app.title}"></h1>
     <main>
 
-        <div id="newpost-form" th:fragment="newpost-form" hx-swap-oob="true">
-            <form hx-post="/posts" hx-ext="json-enc" hx-trigger-name="new-post" hx-target="#posts-list"
-                autocomplete="off">
+        <div id="post-form" th:fragment="post-form" hx-swap-oob="true">
+            <form hx-post="/post" hx-ext="json-enc" hx-target="#post-list" autocomplete="off">
                 <div>
-                    <textarea name="text" autocomplete="off"></textarea>
+                    <textarea id="post-form-text" name="text" autocomplete="off"></textarea>
+                    <br>
+                    <label for="post-form-text" class="error" th:if="${formError != null}"
+                        th:text="${formError}"></label>
                 </div>
                 <div>
                     <input type="submit" value="submit" />
@@ -24,7 +26,7 @@
         </div>
         <hr>
 
-        <div id="posts-list" hx-swap="outerHTML">
+        <div id="post-list" hx-swap="outerHTML">
             <article th:fragment="post-article" th:each="post : ${posts}" class="post-article">
                 <div>
                     <a th:href="@{'/posts/' + ${post.abbrevHash}}" th:text="|#${post.abbrevHash}|"></a>
@@ -36,36 +38,26 @@
             </article>
         </div>
 
-        <div th:fragment="error">
-            <div th:text="${errorTitle}"></div>
-            <div th:text="${errorMessage}"></div>
-            <th:block th:if="${!fieldErrors.isEmpty()}" th:each="fieldError : ${fieldErrors}">
-                <div th:text="${fieldError}"></div>
-            </th:block>
-        </div>
-
-        <th:block th:if="${!posts.isEmpty()}">
-            <hr>
-            <aside>
-                <ul id="pager" th:fragment="pager" hx-swap-oob="true">
-                    <li>
-                        <span th:if="${posts.first}">newest</span>
-                        <a th:if="${not posts.first}" th:href="@{/posts(page=0)}">newest</a>
-                    </li>
-                    <li th:if="${posts.hasPrevious()}">
-                        <a th:href="@{/posts(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
-                    </li>
-                    <li th:text="${posts.number}"></li>
-                    <li class="current" th:if="${posts.hasNext()}">
-                        <a th:href="@{/posts(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
-                    </li>
-                    <li>
-                        <span th:if="${posts.last}">oldest</span>
-                        <a th:if="${not posts.last}" th:href="@{/posts(page=${posts.totalPages}-1)}">oldest</a>
-                    </li>
-                </ul>
-            </aside>
-        </th:block>
+        <hr>
+        <aside>
+            <ul id="pager" th:fragment="pager" hx-swap-oob="true">
+                <li>
+                    <span th:if="${posts.first}">newest</span>
+                    <a th:if="${not posts.first}" th:href="@{/posts(page=0)}">newest</a>
+                </li>
+                <li th:if="${posts.hasPrevious()}">
+                    <a th:href="@{/posts(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
+                </li>
+                <li th:text="${posts.number}"></li>
+                <li class="current" th:if="${posts.hasNext()}">
+                    <a th:href="@{/posts(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
+                </li>
+                <li>
+                    <span th:if="${posts.last}">oldest</span>
+                    <a th:if="${not posts.last}" th:href="@{/posts(page=${posts.totalPages}-1)}">oldest</a>
+                </li>
+            </ul>
+        </aside>
 
     </main>
     <footer style="font-size: small; color: dimgray;">

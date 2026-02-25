@@ -23,6 +23,7 @@ import org.springframework.web.servlet.view.FragmentsRendering;
 import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.service.PostService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRetarget;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +34,7 @@ public class PostController {
     private final PostService postsService;
 
     @HxRequest
-    @PostMapping(path = "/posts", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/post", consumes = MediaType.APPLICATION_JSON_VALUE)
     public FragmentsRendering post(
             @RequestBody @Validated PostDTO dto,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
@@ -43,19 +44,16 @@ public class PostController {
         var allPosts = postsService.getPosts(pageable);
         return FragmentsRendering
                 .fragment("index::post-article", Map.of("posts", allPosts))
-                .fragment("index::newpost-form")
+                .fragment("index::post-form")
                 .fragment("index::pager")
                 .build();
     }
 
+    @HxRetarget("#post-form")
     @ExceptionHandler(BindException.class)
     public FragmentsRendering handleValidationError(BindException ex, Model model) {
-        model.addAttribute("errorTitle", "入力エラーだよ");
-        var fieldErrors = ex.getFieldErrors().stream()
-                .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
-                .toList();
-        model.addAttribute("fieldErrors", fieldErrors);
-        return FragmentsRendering.fragment("index::error").build();
+        model.addAttribute("formError", ex.getFieldError("text").getDefaultMessage());
+        return FragmentsRendering.fragment("index::post-form").build();
     }
 
     @GetMapping("/posts")
@@ -77,7 +75,7 @@ public class PostController {
 
     public static record PostDTO(
             @NotBlank String postHash,
-            @NotBlank String text) {
+            @NotBlank(message = "入力してね") String text) {
         private Post toPost() {
             return Post.builder()
                     .postHash(this.postHash())

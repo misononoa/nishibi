@@ -93,18 +93,23 @@ hr {
 
 /* 投稿フォーム */
 
-#newpost-form>form {
+#post-form>form {
     display: flex;
     flex-direction: column;
 }
 
-#newpost-form>form>div {
+#post-form>form>div {
     flex: 2;
 }
 
-#newpost-form textarea[name=text] {
+#post-form>form>div>textarea[name=text] {
     width: 100%;
     min-height: 4rem;
+}
+
+#post-form label.error {
+    color: crimson;
+    font-size: small;
 }
 
 /* 投稿一覧 */
