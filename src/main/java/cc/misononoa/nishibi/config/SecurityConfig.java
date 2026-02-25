@@ -42,7 +42,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(
             HttpSecurity httpSecurity,
             @Qualifier("nishibi-customized") CorsConfigurationSource corsConfigurationSource) {
-        final var cspDirectives = "script-src 'self' 'sha256-PywGR6ofLvqaqa9FvJYmWwHVW+dkKubUi+wD5MUKkmE=' https://unpkg.com/;";
+        final var cspDirectives = "script-src 'self' 'unsafe-eval' 'sha256-PywGR6ofLvqaqa9FvJYmWwHVW+dkKubUi+wD5MUKkmE=' https://unpkg.com/;";
         return httpSecurity
                 .httpBasic(HttpBasicConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)

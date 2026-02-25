@@ -12,7 +12,8 @@
     <main>
 
         <div id="post-form" th:fragment="post-form" hx-swap-oob="true">
-            <form hx-post="/post" hx-ext="json-enc" hx-target="#post-list" autocomplete="off">
+            <form hx-post="/post" hx-ext="json-enc" hx-target="#post-list" hx-trigger="keyup[ctrlKey&&key=='Enter']"
+                autocomplete="off">
                 <div>
                     <textarea id="post-form-text" name="text" autocomplete="off"></textarea>
                     <br>
