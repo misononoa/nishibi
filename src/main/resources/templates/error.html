@@ -4,7 +4,7 @@
 <head>
     <title th:text="${status}"></title>
     <th:block th:replace="~{common::common-head}"></th:block>
-    <style>
+    <style th:nonce="${_nonce}">
         ul.credits-list {
             list-style-type: none;
             padding-left: 0;

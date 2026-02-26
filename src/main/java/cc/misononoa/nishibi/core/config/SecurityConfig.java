@@ -19,10 +19,12 @@ import org.springframework.security.config.annotation.web.configurers.RememberMe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import cc.misononoa.nishibi.core.web.filter.CspNonceFilter;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HtmxRequestHeader;
 import lombok.RequiredArgsConstructor;
 
@@ -38,11 +40,14 @@ public class SecurityConfig {
 
     private final CorsConfigurationProperties corsConfigurationProperties;
 
+    private static final String CSP_DIRECTIVES = "default-src 'self' 'nonce-{nonce}'; script-src 'nonce-{nonce}' 'strict-dynamic';";
+
+    private final CspNonceFilter cspNonceFilter;
+
     @Bean
     SecurityFilterChain filterChain(
             HttpSecurity httpSecurity,
             @Qualifier("nishibi-customized") CorsConfigurationSource corsConfigurationSource) {
-        final var cspDirectives = "script-src 'self' 'unsafe-eval' 'sha256-PywGR6ofLvqaqa9FvJYmWwHVW+dkKubUi+wD5MUKkmE=' https://unpkg.com/;";
         return httpSecurity
                 .httpBasic(HttpBasicConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
@@ -52,8 +57,9 @@ public class SecurityConfig {
                 .cors(t -> t.configurationSource(corsConfigurationSource))
                 .headers(headers -> headers
                         .frameOptions(FrameOptionsConfig::sameOrigin)
-                        .contentSecurityPolicy(csp -> csp.policyDirectives(cspDirectives))
+                        .contentSecurityPolicy(csp -> csp.policyDirectives(CSP_DIRECTIVES))
                         .httpStrictTransportSecurity(hsts -> hsts.preload(true)))
+                .addFilterBefore(cspNonceFilter, HeaderWriterFilter.class)
                 .build();
     }
 

@@ -7,7 +7,7 @@
     <th:block th:replace="~{common::common-head}" />
 </head>
 
-<style>
+<style th:nonce="${_nonce}">
     aside.relations {
         margin-top: 2rem;
     }

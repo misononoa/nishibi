@@ -5,15 +5,21 @@
 <head>
     <title th:text="#{app.title}"></title>
     <th:block th:replace="~{common::common-head}" />
+    <script src="/keyboard-shortcuts.js" th:nonce="${_nonce}"></script>
+    <style th:nonce="${_nonce}">
+        footer {
+            font-size: small;
+        }
+    </style>
 </head>
+
 
 <body>
     <h1 th:text="#{app.title}"></h1>
     <main>
 
         <div id="post-form" th:fragment="post-form" hx-swap-oob="true">
-            <form hx-post="/post" hx-ext="json-enc" hx-target="#post-list" hx-trigger="keyup[ctrlKey&&key=='Enter']"
-                autocomplete="off">
+            <form hx-post="/post" hx-ext="json-enc" hx-target="#post-list" hx-trigger="createPost" autocomplete="off">
                 <div>
                     <textarea id="post-form-text" name="text" autocomplete="off"></textarea>
                     <br>
@@ -61,7 +67,7 @@
         </aside>
 
     </main>
-    <footer style="font-size: small; color: dimgray;">
+    <footer>
         <a href="/credits">このソフトウェアについて</a>
     </footer>
 </body>
