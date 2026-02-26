@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.web.view;
+package cc.misononoa.nishibi.core.web.exception;
 
 import lombok.experimental.StandardException;
 

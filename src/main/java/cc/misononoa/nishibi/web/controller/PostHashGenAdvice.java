@@ -13,7 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
-import cc.misononoa.nishibi.util.PostHashUtils;
+import cc.misononoa.nishibi.logic.PostHashLogic;
 import cc.misononoa.nishibi.web.controller.PostController.PostDTO;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -51,7 +51,7 @@ public class PostHashGenAdvice extends RequestBodyAdviceAdapter {
                 .filter(StringUtils::isNotBlank)
                 .findFirst()
                 .orElse("");
-        final var postHash = PostHashUtils.generate(
+        final var postHash = PostHashLogic.generate(
                 dto.text(),
                 remoteAddress,
                 request.getSession().getId());

@@ -1,11 +1,11 @@
-package cc.misononoa.nishibi.config;
+package cc.misononoa.nishibi.core.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import cc.misononoa.nishibi.web.interceptor.RateLimitInterceptor;
+import cc.misononoa.nishibi.core.web.interceptor.RateLimitInterceptor;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

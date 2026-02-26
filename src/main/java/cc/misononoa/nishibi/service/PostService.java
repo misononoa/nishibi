@@ -10,11 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import cc.misononoa.nishibi.logic.PostHashLogic;
 import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.model.entity.PostRelation;
 import cc.misononoa.nishibi.repository.PostRelationRepository;
 import cc.misononoa.nishibi.repository.PostRepository;
-import cc.misononoa.nishibi.util.PostHashUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +44,7 @@ public class PostService {
         // 一応再登録にする
         relationRepository.findByRelatedPost(post).stream()
                 .forEach(relationRepository::delete);
-        PostHashUtils.extract(post.getText()).stream()
+        PostHashLogic.extract(post.getText()).stream()
                 .map(this::getByHash)
                 .flatMap(Optional::stream)
                 .map(r -> {

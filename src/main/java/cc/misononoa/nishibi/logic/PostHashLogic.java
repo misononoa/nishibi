@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.util;
+package cc.misononoa.nishibi.logic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,9 +9,11 @@ import java.util.regex.Pattern;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class PostHashUtils {
+import cc.misononoa.nishibi.core.util.TimeUtils;
 
-    private PostHashUtils() {
+public class PostHashLogic {
+
+    private PostHashLogic() {
     }
 
     public static String generate(

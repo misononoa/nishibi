@@ -1,7 +1,9 @@
 package cc.misononoa.nishibi.web.view;
 
+import java.util.List;
 import java.util.Set;
 
+import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.stereotype.Component;
@@ -16,20 +18,26 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import cc.misononoa.nishibi.util.PostHashUtils;
+import cc.misononoa.nishibi.core.web.exception.ViewProcessingException;
+import cc.misononoa.nishibi.logic.PostHashLogic;
 
 @Component
-public class NishibiDialect extends AbstractProcessorDialect {
+public class NishibiMarkdownDialect extends AbstractProcessorDialect {
 
     public static final String DIALECT_PREFIX = "nishibi";
 
     private final Parser parser;
     private final HtmlRenderer renderer;
 
-    protected NishibiDialect(Parser parser, HtmlRenderer renderer) {
+    protected NishibiMarkdownDialect() {
         super("PostLinkDialect", DIALECT_PREFIX, 1000);
-        this.parser = parser;
-        this.renderer = renderer;
+        var extensions = List.of(AutolinkExtension.create());
+        this.parser = Parser.builder()
+                .extensions(extensions)
+                .build();
+        this.renderer = HtmlRenderer.builder()
+                .escapeHtml(true)
+                .build();
     }
 
     @Override
@@ -75,7 +83,7 @@ public class NishibiDialect extends AbstractProcessorDialect {
         }
 
         private String processPostLinks(String html) {
-            var matcher = PostHashUtils.getMatcher(html);
+            var matcher = PostHashLogic.getMatcher(html);
             var result = new StringBuilder();
 
             while (matcher.find()) {

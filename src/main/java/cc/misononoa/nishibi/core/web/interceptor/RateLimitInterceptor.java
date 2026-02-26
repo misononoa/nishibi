@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.web.interceptor;
+package cc.misononoa.nishibi.core.web.interceptor;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import cc.misononoa.nishibi.config.WebConfig.RateLimitProperties;
+import cc.misononoa.nishibi.core.config.WebConfig.RateLimitProperties;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

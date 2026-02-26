@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.util;
+package cc.misononoa.nishibi.core.util;
 
 import java.time.Instant;
 import java.time.LocalDate;
