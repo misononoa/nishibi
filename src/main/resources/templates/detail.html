@@ -48,7 +48,7 @@
             th:with="relatedPost=${relation.relatedPost}">
             <div>
                 <a th:href="@{'/post/' + ${relatedPost.abbrevHash}}" th:text="|#${relatedPost.abbrevHash}|"></a>
-                <span th:text="${#temporals.format(relatedPost.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></span>
+                <span th:text="${#temporals.format(relatedPost.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
             </div>
             <hr>
             <div
