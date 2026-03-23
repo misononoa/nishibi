@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Formula;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
@@ -38,7 +37,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.UUID)
     public UUID id;
 
-    @CreatedDate
     @Column(nullable = false)
     public LocalDateTime createdAt;
 

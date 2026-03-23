@@ -1,5 +1,7 @@
 package cc.misononoa.nishibi.logic;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,11 +21,11 @@ public class PostHashLogic {
     public static String generate(
             String text,
             String remoteAddress,
-            String sessionId) {
+            Instant createdTime) {
         var context = "text:" + StringUtils.defaultString(text) + ";"
                 + "timestamp:" + TimeUtils.nowString() + ";"
                 + "remote:" + remoteAddress + ";"
-                + "sessionId:" + sessionId + ";";
+                + "createdTime:" + DateTimeFormatter.ISO_INSTANT.format(createdTime) + ";";
         return DigestUtils.sha1Hex(context);
     }
 

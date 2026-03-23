@@ -16,15 +16,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
-import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.service.PostService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRetarget;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -36,9 +35,11 @@ public class PostController {
     @HxRequest
     @PostMapping(path = "/post", consumes = MediaType.APPLICATION_JSON_VALUE)
     public FragmentsRendering post(
-            @RequestBody @Validated PostDTO dto,
+            @RequestBody @Validated CreatePostDTO dto,
+            @RequestAttribute("requestTime") Instant requestTime,
+            @RequestAttribute("remoteAddr") String remoteAddr,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
-        postsService.save(dto.toPost())
+        postsService.createPost(dto, remoteAddr, requestTime)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
         var allPosts = postsService.getPosts(pageable);
@@ -71,17 +72,6 @@ public class PostController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         model.addAttribute(post);
         return "detail";
-    }
-
-    public static record PostDTO(
-            @NotBlank String postHash,
-            @NotBlank(message = "入力してね") String text) {
-        private Post toPost() {
-            return Post.builder()
-                    .postHash(this.postHash())
-                    .text(this.text())
-                    .build();
-        }
     }
 
 }

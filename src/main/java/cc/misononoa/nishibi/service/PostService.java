@@ -1,11 +1,13 @@
 package cc.misononoa.nishibi.service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import cc.misononoa.nishibi.model.entity.PostRelation;
 import cc.misononoa.nishibi.repository.PostRelationRepository;
 import cc.misononoa.nishibi.repository.PostRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -30,12 +33,18 @@ public class PostService {
     }
 
     @Transactional
-    public Optional<Post> save(Post post) {
+    public Optional<Post> createPost(CreatePostDTO dto, String remoteAddr, Instant requestTime) {
         try {
-            var result = postRepository.save(post);
-            savePostRelation(post);
+            var p = Post.builder()
+                    .text(dto.text)
+                    .postHash(PostHashLogic.generate(dto.text(), remoteAddr, requestTime))
+                    .createdAt(LocalDateTime.ofInstant(requestTime, ZoneId.systemDefault()))
+                    .build();
+            var result = postRepository.save(p);
+            savePostRelation(result);
             return Optional.of(result);
-        } catch (DataAccessException e) {
+        } catch (RuntimeException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
     }
@@ -73,6 +82,10 @@ public class PostService {
             return Optional.empty();
         }
         return postRepository.findByAbbrevHash(postHash);
+    }
+
+    public static record CreatePostDTO(
+            @NotBlank(message = "入力してね") String text) {
     }
 
 }
