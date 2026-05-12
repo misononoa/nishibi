@@ -2,22 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org/">
 
 <head>
-    <title th:text="${status}"></title>
+    <title th:text="${errorTitle}"></title>
     <th:block th:replace="~{common::common-head}"></th:block>
-    <style th:nonce="${_nonce}">
-        ul.credits-list {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        ul.credits-list>li>h2 {
-            margin-bottom: 0.7rem;
-        }
-
-        ul.credits-list>li>hr {
-            margin: 0.5rem 0;
-        }
-    </style>
 </head>
 
 <body>

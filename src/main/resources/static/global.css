@@ -2,6 +2,7 @@
     --bgcolor: #f1f5f9;
     --linkcolor: darkblue;
     --bordercolor: darkgray;
+    --errorcolor: crimson;
 }
 
 @font-face {
@@ -40,6 +41,8 @@ hr {
     color: var(--bordercolor);
     margin-top: 25px;
     margin-bottom: 25px;
+    border: none;
+    border-top: 3px dotted var(--bordercolor);
 }
 
 @media screen and (max-width: 600px) {
@@ -53,6 +56,7 @@ a {
     text-decoration: none;
 }
 
+/* 投稿ページ */
 #post-detail>.post-text h1 {
     font-size: 1.6rem;
 }
@@ -86,38 +90,32 @@ a {
     font-size: 1.1rem;
 }
 
-hr {
-    border: none;
-    border-top: 3px dotted var(--bordercolor);
-}
-
 /* 投稿フォーム */
-
-#post-form>form {
+#postform-wrap>form {
     display: flex;
     flex-direction: column;
 }
 
-#post-form>form>div {
+#postform-wrap>form>div {
     flex: 2;
 }
 
-#post-form>form>div>textarea[name=text] {
+#postform-wrap>form>div>textarea[name=text] {
     width: 100%;
     min-height: 4rem;
 }
 
-#post-form label.error {
-    color: crimson;
+#postform-wrap label.error {
+    color: var(--errorcolor);
     font-size: small;
 }
 
 /* 投稿一覧 */
-article.post-article {
+article.post-item {
     margin: 2.5rem 0;
 }
 
-article.post-article>.post-text>h1,
+article.post-item>.post-text>h1,
 h2,
 h3,
 h4,
@@ -126,28 +124,28 @@ h6 {
     margin: 0.5rem 0;
 }
 
-article.post-article>.post-text>h1 {
+article.post-item>.post-text>h1 {
     font-size: 1.2rem;
 }
 
-article.post-article>.post-text>h2 {
+article.post-item>.post-text>h2 {
     font-size: 1.15rem;
 }
 
-article.post-article>.post-text>h3 {
+article.post-item>.post-text>h3 {
     font-size: 1.1rem;
 }
 
-article.post-article>.post-text>h4 {
+article.post-item>.post-text>h4 {
     font-size: 1.05rem;
 }
 
-article.post-article>.post-text>h5,
+article.post-item>.post-text>h5,
 h6 {
     font-size: 1rem;
 }
 
-article.post-article>.post-text>*:first-child {
+article.post-item>.post-text>*:first-child {
     margin-top: 0;
 }
 

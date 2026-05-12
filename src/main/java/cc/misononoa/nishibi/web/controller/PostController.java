@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
+import cc.misononoa.nishibi.core.web.model.RequestInfo;
+import cc.misononoa.nishibi.model.form.PostForm;
 import cc.misononoa.nishibi.service.PostService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRetarget;
@@ -32,29 +33,28 @@ public class PostController {
 
     private final PostService postsService;
 
-    @HxRequest
-    @PostMapping(path = "/post", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public FragmentsRendering post(
-            @RequestBody @Validated CreatePostDTO dto,
-            @RequestAttribute("requestTime") Instant requestTime,
-            @RequestAttribute("remoteAddr") String remoteAddr,
+    @HxRequest(target = "post-list", triggerId = "postform")
+    @PostMapping(path = "/post", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Object post(
+            @Validated PostForm form,
+            @RequestAttribute("requestInfo") RequestInfo info,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
-        postsService.createPost(dto, remoteAddr, requestTime)
+        postsService.createPost(form, info)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
-        var allPosts = postsService.getPosts(pageable);
+        var posts = postsService.getPosts(pageable);
+        form.setText("");
         return FragmentsRendering
-                .fragment("index::post-article", Map.of("posts", allPosts))
-                .fragment("index::post-form")
+                .fragment("index::post-item", Map.of("posts", posts))
+                .fragment("index::postform-wrap")
                 .fragment("index::pager")
                 .build();
     }
 
-    @HxRetarget("#post-form")
+    @HxRetarget("#postform-wrap")
     @ExceptionHandler(BindException.class)
-    public FragmentsRendering handleValidationError(BindException ex, Model model) {
-        model.addAttribute("formError", ex.getFieldError("text").getDefaultMessage());
-        return FragmentsRendering.fragment("index::post-form").build();
+    public FragmentsRendering handleValidationError(BindException ex) {
+        return FragmentsRendering.fragment("index::postform-wrap", ex.getModel()).build();
     }
 
     @GetMapping("/post")

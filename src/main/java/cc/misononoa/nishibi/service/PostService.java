@@ -1,8 +1,6 @@
 package cc.misononoa.nishibi.service;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,9 +10,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import cc.misononoa.nishibi.core.web.model.RequestInfo;
 import cc.misononoa.nishibi.logic.PostHashLogic;
 import cc.misononoa.nishibi.model.entity.Post;
 import cc.misononoa.nishibi.model.entity.PostRelation;
+import cc.misononoa.nishibi.model.form.PostForm;
 import cc.misononoa.nishibi.repository.PostRelationRepository;
 import cc.misononoa.nishibi.repository.PostRepository;
 import jakarta.transaction.Transactional;
@@ -33,12 +33,12 @@ public class PostService {
     }
 
     @Transactional
-    public Optional<Post> createPost(CreatePostDTO dto, String remoteAddr, Instant requestTime) {
+    public Optional<Post> createPost(PostForm form, RequestInfo info) {
         try {
-            var p = Post.builder()
-                    .text(dto.text)
-                    .postHash(PostHashLogic.generate(dto.text(), remoteAddr, requestTime))
-                    .createdAt(LocalDateTime.ofInstant(requestTime, ZoneId.systemDefault()))
+            var hash = PostHashLogic.generate(form.getText(), info.remoteAddr(), info.requestTime());
+            var p = Post.builder().text(form.getText())
+                    .postHash(hash)
+                    .createdAt(LocalDateTime.ofInstant(info.requestTime(), info.timeZone()))
                     .build();
             var result = postRepository.save(p);
             savePostRelation(result);
@@ -51,18 +51,11 @@ public class PostService {
 
     private void savePostRelation(Post post) {
         // 一応再登録にする
-        relationRepository.findByRelatedPost(post).stream()
-                .forEach(relationRepository::delete);
-        PostHashLogic.extract(post.getText()).stream()
-                .map(this::getByHash)
-                .flatMap(Optional::stream)
-                .map(r -> {
-                    return PostRelation.builder()
-                            .post(r)
-                            .relatedPost(post)
-                            .build();
-                })
-                .forEach(relationRepository::save);
+        relationRepository.findByRelatedPost(post).stream().forEach(relationRepository::delete);
+        PostHashLogic.extract(post.getText()).stream().map(this::getByHash)
+                .flatMap(Optional::stream).map(r -> {
+                    return PostRelation.builder().post(r).relatedPost(post).build();
+                }).forEach(relationRepository::save);
     }
 
     public Optional<Post> get(UUID id) {

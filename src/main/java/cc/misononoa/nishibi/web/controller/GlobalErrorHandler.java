@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-@ControllerAdvice
-public class GlobalErrorHandlingAdvice {
+import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRetarget;
 
+@ControllerAdvice
+public class GlobalErrorHandler {
+
+    @HxRetarget("body")
     @ExceptionHandler(RuntimeException.class)
     public String handleInternalServerError(RuntimeException ex, Model model) {
+        ex.printStackTrace();
         var rse = new ResponseStatusException(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 Optional.ofNullable(ex.getMessage()).orElse("内部エラーです。ごめんね。"),
@@ -32,6 +36,7 @@ public class GlobalErrorHandlingAdvice {
 
     private static final String STATUS_FMT = "%03d %s";
 
+    @HxRetarget("body")
     @ExceptionHandler(ResponseStatusException.class)
     public String handleErrorResponse(ResponseStatusException ex, Model model) {
         final var status = HttpStatus.valueOf(ex.getStatusCode().value());
