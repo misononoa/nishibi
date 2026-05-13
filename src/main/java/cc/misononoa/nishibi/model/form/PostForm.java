@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class PostForm {
 
-    @NotBlank(message = "にゅうりょくしてね")
+    @NotBlank
     @Length(min = 3, max = 3000)
     private String text;
 

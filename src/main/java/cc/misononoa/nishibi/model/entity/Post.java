@@ -6,18 +6,14 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Formula;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +24,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @Data
-@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(schema = "public", name = "post")
 public class Post {
@@ -40,7 +35,6 @@ public class Post {
     @Column(nullable = false)
     public LocalDateTime createdAt;
 
-    @NotBlank
     @Column(name = "post_hash", nullable = false, unique = true, length = 40)
     public String postHash;
 
@@ -54,7 +48,6 @@ public class Post {
         return abbrevHash;
     }
 
-    @NotEmpty
     @Column(nullable = false, columnDefinition = "text")
     public String text;
 

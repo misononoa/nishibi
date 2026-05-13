@@ -19,7 +19,6 @@ import cc.misononoa.nishibi.model.form.PostForm;
 import cc.misononoa.nishibi.repository.PostRelationRepository;
 import cc.misononoa.nishibi.repository.PostRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -78,10 +77,6 @@ public class PostService {
             return Optional.empty();
         }
         return postRepository.findByAbbrevHash(postHash);
-    }
-
-    public static record CreatePostDTO(
-            @NotBlank(message = "入力してね") String text) {
     }
 
 }
