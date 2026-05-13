@@ -7,7 +7,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import cc.misononoa.nishibi.core.web.model.RequestInfo;
@@ -28,8 +29,10 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostRelationRepository relationRepository;
 
-    public Page<Post> getPosts(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<Post> getPosts(Integer page) {
+        var pageRequest = PageRequest.of(page, 10)
+                .withSort(Sort.by("createdAt").descending());
+        return postRepository.findAll(pageRequest);
     }
 
     @Transactional

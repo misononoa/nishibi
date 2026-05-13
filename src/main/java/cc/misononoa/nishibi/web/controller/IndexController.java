@@ -1,7 +1,5 @@
 package cc.misononoa.nishibi.web.controller;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +18,8 @@ public class IndexController {
 
     @GetMapping
     public String index(Model model) {
-        var pageable = PageRequest
-                .of(0, 10)
-                .withSort(Sort.by("createdAt").descending());
         model.addAttribute("postForm", new PostForm());
-        model.addAttribute("posts", postsService.getPosts(pageable));
+        model.addAttribute("posts", postsService.getPosts(0));
         return "index";
     }
 

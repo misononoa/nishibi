@@ -1,11 +1,7 @@
 package cc.misononoa.nishibi.web.controller;
 
-import static org.springframework.data.domain.Sort.Direction.DESC;
-
 import java.util.Map;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
@@ -38,11 +35,11 @@ public class PostController {
     public Object post(
             @Validated PostForm form,
             @RequestAttribute("requestInfo") RequestInfo info,
-            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
+            @RequestParam(name = "page", defaultValue = "0") Integer page) {
         postsService.createPost(form, info)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
 
-        var posts = postsService.getPosts(pageable);
+        var posts = postsService.getPosts(page);
         form.setText("");
         return FragmentsRendering
                 .fragment("index::post-item", Map.of("posts", posts))
@@ -61,8 +58,8 @@ public class PostController {
     @GetMapping("/post")
     public FragmentsRendering get(
             Model model,
-            @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
-        var posts = postsService.getPosts(pageable);
+            @RequestParam(name = "page", defaultValue = "0") Integer page) {
+        var posts = postsService.getPosts(page);
         model.addAttribute("posts", posts);
         return FragmentsRendering
                 .fragment("index::post-item")
