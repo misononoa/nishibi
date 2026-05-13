@@ -28,27 +28,16 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostRelationRepository relationRepository;
 
-    public Page<Post> getPosts(Integer page) {
-        var pageRequest = PageRequest.of(page, 10)
-                .withSort(Sort.by("createdAt").descending());
-        return postRepository.findAll(pageRequest);
-    }
-
     @Transactional
-    public Optional<Post> createPost(PostForm form, RequestInfo info) {
-        try {
-            var hash = PostHashLogic.generate(form.getText(), info.remoteAddr(), info.requestTime());
-            var p = Post.builder().text(form.getText())
-                    .postHash(hash)
-                    .createdAt(LocalDateTime.ofInstant(info.requestTime(), info.timeZone()))
-                    .build();
-            var result = postRepository.save(p);
-            savePostRelation(result);
-            return Optional.of(result);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Post createPost(PostForm form, RequestInfo info) {
+        var hash = PostHashLogic.generate(form.getText(), info.remoteAddr(), info.requestTime());
+        var p = Post.builder().text(form.getText())
+                .postHash(hash)
+                .createdAt(LocalDateTime.ofInstant(info.requestTime(), info.timeZone()))
+                .build();
+        var result = postRepository.save(p);
+        savePostRelation(result);
+        return result;
     }
 
     private void savePostRelation(Post post) {
@@ -58,6 +47,12 @@ public class PostService {
                 .flatMap(Optional::stream).map(r -> {
                     return PostRelation.builder().post(r).relatedPost(post).build();
                 }).forEach(relationRepository::save);
+    }
+
+    public Page<Post> getPosts(Integer page) {
+        var pageRequest = PageRequest.of(page, 10)
+                .withSort(Sort.by("createdAt").descending());
+        return postRepository.findAll(pageRequest);
     }
 
     public Optional<Post> get(UUID id) {

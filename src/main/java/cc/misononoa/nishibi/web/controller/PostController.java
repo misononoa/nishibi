@@ -36,9 +36,7 @@ public class PostController {
             @Validated PostForm form,
             @RequestAttribute("requestInfo") RequestInfo info,
             @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        postsService.createPost(form, info)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
-
+        postsService.createPost(form, info);
         var posts = postsService.getPosts(page);
         form.setText("");
         return FragmentsRendering
