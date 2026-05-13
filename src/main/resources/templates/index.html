@@ -50,18 +50,21 @@
             <ul id="pager" th:fragment="pager" hx-swap-oob="true">
                 <li>
                     <span th:if="${posts.first}">newest</span>
-                    <a th:if="${not posts.first}" th:href="@{/post(page=0)}">newest</a>
+                    <a th:if="${not posts.first}" th:hx-get="@{/post(page=0)}" hx-target="#post-list">newest</a>
                 </li>
                 <li th:if="${posts.hasPrevious()}">
-                    <a th:href="@{/post(page=${posts.number}-1)}" th:text="${posts.number}-1"></a>
+                    <a th:hx-get="@{/post(page=${posts.number}-1)}" hx-target="#post-list"
+                        th:text="${posts.number}-1"></a>
                 </li>
                 <li th:text="${posts.number}"></li>
                 <li class="current" th:if="${posts.hasNext()}">
-                    <a th:href="@{/post(page=(${posts.number}+1))}" th:text="${posts.number}+1"></a>
+                    <a th:hx-get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list"
+                        th:text="${posts.number}+1"></a>
                 </li>
                 <li>
                     <span th:if="${posts.last}">oldest</span>
-                    <a th:if="${not posts.last}" th:href="@{/post(page=${posts.totalPages}-1)}">oldest</a>
+                    <a th:if="${not posts.last}" th:hx-get="@{/post(page=${posts.totalPages}-1)}"
+                        hx-target="#post-list">oldest</a>
                 </li>
             </ul>
         </aside>

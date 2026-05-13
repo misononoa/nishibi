@@ -57,13 +57,17 @@ public class PostController {
         return FragmentsRendering.fragment("index::postform-wrap", ex.getModel()).build();
     }
 
+    @HxRequest(target = "post-list")
     @GetMapping("/post")
-    public String get(
+    public FragmentsRendering get(
             Model model,
             @PageableDefault(size = 10, sort = "createdAt", direction = DESC) Pageable pageable) {
         var posts = postsService.getPosts(pageable);
         model.addAttribute("posts", posts);
-        return "index";
+        return FragmentsRendering
+                .fragment("index::post-item")
+                .fragment("index::pager")
+                .build();
     }
 
     @GetMapping("/post/{abbrevHash}")
