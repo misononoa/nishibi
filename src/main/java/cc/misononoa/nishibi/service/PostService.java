@@ -42,11 +42,16 @@ public class PostService {
 
     private void savePostRelation(Post post) {
         // 一応再登録にする
-        relationRepository.findByRelatedPost(post).stream().forEach(relationRepository::delete);
-        PostHashLogic.extract(post.getText()).stream().map(this::getByHash)
-                .flatMap(Optional::stream).map(r -> {
+        relationRepository.findByRelatedPost(post).stream()
+                .forEach(relationRepository::delete);
+        PostHashLogic.extract(post.getText()).stream()
+                .map(this::getByHash)
+                .flatMap(Optional::stream)
+                .distinct()
+                .map(r -> {
                     return PostRelation.builder().post(r).relatedPost(post).build();
-                }).forEach(relationRepository::save);
+                })
+                .forEach(relationRepository::save);
     }
 
     public Page<Post> getPosts(Integer page) {
