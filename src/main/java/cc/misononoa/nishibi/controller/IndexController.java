@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.web.controller;
+package cc.misononoa.nishibi.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

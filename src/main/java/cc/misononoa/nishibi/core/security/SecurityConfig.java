@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.core.config;
+package cc.misononoa.nishibi.core.security;
 
 import java.util.ArrayList;
 import java.util.List;
