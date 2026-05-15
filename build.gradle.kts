@@ -37,6 +37,7 @@ dependencies {
 	implementation("commons-codec:commons-codec")
 	implementation("org.commonmark:commonmark:0.26.0")
 	implementation("org.commonmark:commonmark-ext-autolink:0.26.0")
+	implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")

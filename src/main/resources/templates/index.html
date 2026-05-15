@@ -1,26 +1,91 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:nishibi="http://nishibi.misononoa.cc/nishibi">
+    xmlns:hx="http://wimdeblauwe.github.io/htmx-spring-boot-thymeleaf"
+    xmlns:nishibi="http://nishibi.misononoa.cc/nishibi" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
 
 <head>
-    <title th:text="#{app.title}"></title>
-    <th:block th:replace="~{common::common-head}" />
     <script src="/keyboard-shortcuts.js" th:nonce="${_nonce}"></script>
     <style th:nonce="${_nonce}">
-        footer {
+        /* 投稿フォーム */
+        #postform-wrap>form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #postform-wrap>form>div {
+            flex: 2;
+        }
+
+        #postform-wrap>form>div>textarea[name=text] {
+            width: 100%;
+            min-height: 4rem;
+        }
+
+        #postform-wrap label.error {
+            color: var(--errorcolor);
             font-size: small;
+        }
+
+        /* 投稿一覧 */
+        article.post-item>.post-text>h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0.5rem 0;
+        }
+
+        article.post-item>.post-text>h1 {
+            font-size: 1.2rem;
+        }
+
+        article.post-item>.post-text>h2 {
+            font-size: 1.15rem;
+        }
+
+        article.post-item>.post-text>h3 {
+            font-size: 1.1rem;
+        }
+
+        article.post-item>.post-text>h4 {
+            font-size: 1.05rem;
+        }
+
+        article.post-item>.post-text>h5,
+        h6 {
+            font-size: 1rem;
+        }
+
+        article.post-item>.post-text>*:first-child {
+            margin-top: 0;
+        }
+
+        /* ページャ */
+        ul#pager {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        ul#pager>li {
+            display: inline;
+        }
+
+        ul#pager>li:first-child {
+            margin-right: 0.8rem;
+        }
+
+        ul#pager>li:last-child {
+            margin-left: 0.8rem;
         }
     </style>
 </head>
 
-
 <body>
-    <header>
-        <h1 th:text="#{app.title}"></h1>
-    </header>
-    <main>
-        <div id="postform-wrap" th:fragment="postform-wrap" hx-swap-oob="true">
-            <form id="postform" th:hx-post="@{/post}" hx-target="#post-list" hx-trigger="createPost, submit"
+    <main layout:fragment="content">
+        <div id="postform-wrap" th:fragment="postform-wrap" hx:swap-oob="true">
+            <form id="postform" hx:post="@{/post}" hx-target="#post-list" hx-trigger="createPost, submit"
                 th:object="${postForm}">
                 <div>
                     <textarea id="postform-text" th:field="*{text}" autocomplete="off"></textarea>
@@ -34,7 +99,7 @@
             </form>
         </div>
         <hr>
-        <div id="post-list" th:hx-swap="innerHTML">
+        <div id="post-list" hx:swap="innerHTML">
             <article th:fragment="post-item" th:each="post : ${posts}" class="post-item">
                 <div>
                     <a th:href="@{|/post/${post.abbrevHash}|}" th:text="|#${post.abbrevHash}|"></a>
@@ -47,31 +112,27 @@
         </div>
         <hr>
         <aside>
-            <ul id="pager" th:fragment="pager" hx-swap-oob="true">
+            <ul id="pager" th:fragment="pager" hx:swap-oob="true">
                 <li>
                     <span th:if="${posts.first}">newest</span>
-                    <a th:if="${not posts.first}" th:hx-get="@{/post(page=0)}" hx-target="#post-list">newest</a>
+                    <a th:if="${not posts.first}" hx:get="@{/post(page=0)}" hx-target="#post-list">newest</a>
                 </li>
                 <li th:if="${posts.hasPrevious()}">
-                    <a th:hx-get="@{/post(page=${posts.number}-1)}" hx-target="#post-list"
-                        th:text="${posts.number}-1"></a>
+                    <a hx:get="@{/post(page=${posts.number}-1)}" hx-target="#post-list" th:text="${posts.number}-1"></a>
                 </li>
                 <li th:text="${posts.number}"></li>
                 <li class="current" th:if="${posts.hasNext()}">
-                    <a th:hx-get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list"
+                    <a hx:get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list"
                         th:text="${posts.number}+1"></a>
                 </li>
                 <li>
                     <span th:if="${posts.last}">oldest</span>
-                    <a th:if="${not posts.last}" th:hx-get="@{/post(page=${posts.totalPages}-1)}"
+                    <a th:if="${not posts.last}" hx:get="@{/post(page=${posts.totalPages}-1)}"
                         hx-target="#post-list">oldest</a>
                 </li>
             </ul>
         </aside>
     </main>
-    <footer>
-        <a href="/credits">このソフトウェアについて</a>
-    </footer>
 </body>
 
 </html>

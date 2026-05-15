@@ -15,26 +15,29 @@
     src: url("/MPLUS1Code-Medium.ttf");
 }
 
-html {
+body {
     background-color: var(--bgcolor);
     font-family: "KH Dot Akihabara 16", cursive;
     font-weight: bold;
-}
-
-body {
     margin: 0 auto;
     max-width: 70ch;
     height: 100%;
     line-height: 1.5;
 }
 
+@media screen and (max-width: 600px) {
+    body {
+        margin: 3ch;
+    }
+}
+
 footer {
     margin-top: 3rem;
+    font-size: small;
 }
 
 article {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin: 2.5rem 0;
 }
 
 hr {
@@ -45,125 +48,7 @@ hr {
     border-top: 3px dotted var(--bordercolor);
 }
 
-@media screen and (max-width: 600px) {
-    body {
-        margin: 3ch;
-    }
-}
-
 a {
     color: var(--linkcolor);
     text-decoration: none;
-}
-
-/* 投稿ページ */
-#post-detail>.post-text h1 {
-    font-size: 1.6rem;
-}
-
-#post-detail>.post-text h2 {
-    font-size: 1.5rem;
-}
-
-#post-detail>.post-text h3 {
-    font-size: 1.4rem;
-}
-
-#post-detail>.post-text h4 {
-    font-size: 1.3rem;
-}
-
-#post-detail>.post-text h5 {
-    font-size: 1.2rem;
-}
-
-#post-detail>.post-text h6 {
-    font-size: 1.1rem;
-}
-
-#post-detail>.post-text pre {
-    border-radius: 0.4rem;
-    padding: 0.7rem;
-    background-color: rgb(48, 48, 48);
-    color: white;
-    font-family: 'M PLUS 1 Code Medium';
-    font-size: 1.1rem;
-}
-
-/* 投稿フォーム */
-#postform-wrap>form {
-    display: flex;
-    flex-direction: column;
-}
-
-#postform-wrap>form>div {
-    flex: 2;
-}
-
-#postform-wrap>form>div>textarea[name=text] {
-    width: 100%;
-    min-height: 4rem;
-}
-
-#postform-wrap label.error {
-    color: var(--errorcolor);
-    font-size: small;
-}
-
-/* 投稿一覧 */
-article.post-item {
-    margin: 2.5rem 0;
-}
-
-article.post-item>.post-text>h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0.5rem 0;
-}
-
-article.post-item>.post-text>h1 {
-    font-size: 1.2rem;
-}
-
-article.post-item>.post-text>h2 {
-    font-size: 1.15rem;
-}
-
-article.post-item>.post-text>h3 {
-    font-size: 1.1rem;
-}
-
-article.post-item>.post-text>h4 {
-    font-size: 1.05rem;
-}
-
-article.post-item>.post-text>h5,
-h6 {
-    font-size: 1rem;
-}
-
-article.post-item>.post-text>*:first-child {
-    margin-top: 0;
-}
-
-/* ページャ */
-
-ul#pager {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-ul#pager>li {
-    display: inline;
-}
-
-ul#pager>li:first-child {
-    margin-right: 0.8rem;
-}
-
-ul#pager>li:last-child {
-    margin-left: 0.8rem;
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title th:text="#{app.title}"></title>
+    <th:block th:replace="~{common::common-head}"></th:block>
+</head>
+
+<body>
+    <header>
+        <h1 th:text="#{app.title}">layout</h1>
+    </header>
+    <main layout:fragment="content">
+        <p>page content</p>
+    </main>
+    <footer>
+        <div layout:fragment="custom-footer"></div>
+        <div><a href="/credits">このソフトウェアについて</a></div>
+    </footer>
+</body>
+
+</html>

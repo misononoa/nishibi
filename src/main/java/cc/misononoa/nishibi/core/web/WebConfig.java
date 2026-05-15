@@ -13,6 +13,7 @@ import org.thymeleaf.processor.IProcessor;
 import cc.misononoa.nishibi.core.web.interceptor.RateLimitInterceptor;
 import cc.misononoa.nishibi.core.web.view.NishibiMdProcessor;
 import lombok.RequiredArgsConstructor;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 @RequiredArgsConstructor
 @Configuration
@@ -29,6 +30,11 @@ public class WebConfig implements WebMvcConfigurer {
     public static record RateLimitProperties(
             int window,
             int limit) {
+    }
+
+    @Bean
+    LayoutDialect layoutDialect() {
+        return new LayoutDialect();
     }
 
     @Bean
