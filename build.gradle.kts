@@ -50,9 +50,12 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-thymeleaf-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-security-test")
+	testImplementation("com.codeborne:selenide:7.16.2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	// Selenideによるe2eテストはヘッドレスChromeを起動する。
+	systemProperty("selenide.headless", "true")
 }

@@ -1,0 +1,24 @@
+# テスト用プロファイル。
+# 方針: どのテストでもDBへ接続しない。DataSource/JPA/Hibernateのオートコンフィグを除外し、
+# DBアクセスが必要な箇所はRepositoryをMockitoでスタブ化する。
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration
+  thymeleaf:
+    cache: false
+
+# RateLimitProperties / CorsConfigurationProperties のバインドに必要。
+# テスト中はレート制限に引っかからないよう limit を大きめにする。
+nishibi:
+  web:
+    rate-limit:
+      limit: 100000
+      window: 30
+    cors:
+      allowed-origins:
+        - 'http://localhost'
+        - 'http://127.0.0.1'
