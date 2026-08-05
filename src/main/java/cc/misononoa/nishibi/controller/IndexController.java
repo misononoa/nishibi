@@ -23,9 +23,4 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("credits")
-    public String credits() {
-        return "credits";
-    }
-
 }
