@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/nishibidb
-    username: nishibi
-    password: nishibi
   devtools:
     livereload:
       enabled: true
@@ -24,7 +19,7 @@ logging:
 nishibi:
   web:
     rate-limit:
-      limit: 5
+      limit: 10
       window: 30
     cors:
       allowed-origins:

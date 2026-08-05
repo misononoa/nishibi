@@ -3,3 +3,11 @@ spring:
     name: nishibi-bbs
   profiles:
     active: "dev"
+  config:
+    import:
+    - optional:env:NISHIBI
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://${nishibi.db.host:localhost}:${nishibi.db.port:5432}/${nishibi.db.name:nishibidb}"
+    username: "${nishibi.db.username:nishibi}"
+    password: "${nishibi.db.password:nishibi}"
