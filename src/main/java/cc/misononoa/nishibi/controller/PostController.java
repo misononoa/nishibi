@@ -38,7 +38,7 @@ public class PostController {
             @RequestParam(name = "page", defaultValue = "0") Integer page) {
         postsService.createPost(form, info);
         var posts = postsService.getPosts(page);
-        form.setText("");
+        form.setContent("");
         return FragmentsRendering
                 .fragment("index::post-item", Map.of("posts", posts))
                 .fragment("index::postform-wrap")

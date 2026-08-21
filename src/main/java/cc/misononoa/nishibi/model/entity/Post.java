@@ -30,9 +30,10 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     public UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     public LocalDateTime createdAt;
 
     @Column(name = "post_hash", nullable = false, unique = true, length = 40)
@@ -48,8 +49,8 @@ public class Post {
         return abbrevHash;
     }
 
-    @Column(nullable = false, columnDefinition = "text")
-    public String text;
+    @Column(name = "content", nullable = false, columnDefinition = "text")
+    public String content;
 
     @OneToMany(mappedBy = "post")
     public List<PostRelation> postRelations;

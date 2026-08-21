@@ -30,8 +30,8 @@ public class PostService {
 
     @Transactional
     public Post createPost(PostForm form, RequestInfo info) {
-        var hash = PostHashLogic.generate(form.getText(), info.remoteAddr(), info.requestTime());
-        var p = Post.builder().text(form.getText())
+        var hash = PostHashLogic.generate(form.getContent(), info.remoteAddr(), info.requestTime());
+        var p = Post.builder().content(form.getContent())
                 .postHash(hash)
                 .createdAt(LocalDateTime.ofInstant(info.requestTime(), info.timeZone()))
                 .build();
@@ -44,7 +44,7 @@ public class PostService {
         // 一応再登録にする
         relationRepository.findByRelatedPost(post).stream()
                 .forEach(relationRepository::delete);
-        PostHashLogic.extract(post.getText()).stream()
+        PostHashLogic.extract(post.getContent()).stream()
                 .map(this::getByHash)
                 .flatMap(Optional::stream)
                 .distinct()
@@ -56,7 +56,7 @@ public class PostService {
 
     public Page<Post> getPosts(Integer page) {
         var pageRequest = PageRequest.of(page, 10)
-                .withSort(Sort.by("createdAt").descending());
+                .withSort(Sort.by(Post::getCreatedAt).descending());
         return postRepository.findAll(pageRequest);
     }
 

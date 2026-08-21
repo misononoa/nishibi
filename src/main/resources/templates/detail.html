@@ -5,31 +5,31 @@
     layout:decorate="~{layout}">
 
 <style layout:fragment="styles" th:nonce="${_nonce}">
-    #post-detail>.post-text h1 {
+    #post-detail>.post-content h1 {
         font-size: 1.6rem;
     }
 
-    #post-detail>.post-text h2 {
+    #post-detail>.post-content h2 {
         font-size: 1.5rem;
     }
 
-    #post-detail>.post-text h3 {
+    #post-detail>.post-content h3 {
         font-size: 1.4rem;
     }
 
-    #post-detail>.post-text h4 {
+    #post-detail>.post-content h4 {
         font-size: 1.3rem;
     }
 
-    #post-detail>.post-text h5 {
+    #post-detail>.post-content h5 {
         font-size: 1.2rem;
     }
 
-    #post-detail>.post-text h6 {
+    #post-detail>.post-content h6 {
         font-size: 1.1rem;
     }
 
-    #post-detail>.post-text pre {
+    #post-detail>.post-content pre {
         border-radius: 0.4rem;
         padding: 0.7rem;
         background-color: rgb(48, 48, 48);
@@ -59,14 +59,14 @@
 </style>
 
 <main layout:fragment="contents">
-        <article th:fragment="post-detail" id="post-detail" class="post-detail">
-            <div class="post-header">
-                <div th:text="|postHash: ${post.postHash}|"></div>
-                <div th:text="|createdAt: ${post.createdAt}|"></div>
-            </div>
-            <hr>
-            <div class="post-text" nishibi:render="${post.text}"></div>
-        </article>
+    <article th:fragment="post-detail" id="post-detail" class="post-detail">
+        <div class="post-header">
+            <div th:text="|postHash: ${post.postHash}|"></div>
+            <div th:text="|createdAt: ${post.createdAt}|"></div>
+        </div>
+        <hr>
+        <div class="post-content" nishibi:render="${post.content}"></div>
+    </article>
 
     <aside class="relations" th:if="${!post.postRelations.isEmpty()}">
         <h2>
@@ -80,13 +80,13 @@
             </div>
             <hr>
             <div
-                th:text="${#strings.length(relatedPost.text) gt 120 ? #strings.substring(relatedPost.text, 0, 120) + '...' : relatedPost.text}">
+                th:text="${#strings.length(relatedPost.content) gt 120 ? #strings.substring(relatedPost.content, 0, 120) + '...' : relatedPost.content}">
             </div>
         </article>
     </aside>
 </main>
 <footer layout:fragment="custom-footer">
-        <div><a href="/">&lt;&nbsp;top</a></div>
+    <div><a href="/">&lt;&nbsp;top</a></div>
 </footer>
 
 </html>

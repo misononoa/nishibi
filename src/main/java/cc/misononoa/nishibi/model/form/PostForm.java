@@ -10,6 +10,6 @@ public class PostForm {
 
     @NotBlank
     @Length(min = 3, max = 3000)
-    private String text;
+    private String content;
 
 }

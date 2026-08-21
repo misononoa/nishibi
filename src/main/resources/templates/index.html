@@ -6,128 +6,128 @@
 
 <script layout:fragment="scripts" src="/keyboard-shortcuts.js" th:nonce="${_nonce}"></script>
 <style layout:fragment="styles" th:nonce="${_nonce}">
-        /* 投稿フォーム */
-        #postform-wrap>form {
-            display: flex;
-            flex-direction: column;
-        }
+    /* 投稿フォーム */
+    #postform-wrap>form {
+        display: flex;
+        flex-direction: column;
+    }
 
-        #postform-wrap>form>div {
-            flex: 2;
-        }
+    #postform-wrap>form>div {
+        flex: 2;
+    }
 
-        #postform-wrap>form>div>textarea[name=text] {
-            width: 100%;
-            min-height: 4rem;
-        }
+    #postform-wrap>form>div>textarea[name=content] {
+        width: 100%;
+        min-height: 4rem;
+    }
 
-        #postform-wrap label.error {
-            color: var(--errorcolor);
-            font-size: small;
-        }
+    #postform-wrap label.error {
+        color: var(--errorcolor);
+        font-size: small;
+    }
 
-        /* 投稿一覧 */
-        article.post-item>.post-text>h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            margin: 0.5rem 0;
-        }
+    /* 投稿一覧 */
+    article.post-item>.post-content>h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0.5rem 0;
+    }
 
-        article.post-item>.post-text>h1 {
-            font-size: 1.2rem;
-        }
+    article.post-item>.post-content>h1 {
+        font-size: 1.2rem;
+    }
 
-        article.post-item>.post-text>h2 {
-            font-size: 1.15rem;
-        }
+    article.post-item>.post-content>h2 {
+        font-size: 1.15rem;
+    }
 
-        article.post-item>.post-text>h3 {
-            font-size: 1.1rem;
-        }
+    article.post-item>.post-content>h3 {
+        font-size: 1.1rem;
+    }
 
-        article.post-item>.post-text>h4 {
-            font-size: 1.05rem;
-        }
+    article.post-item>.post-content>h4 {
+        font-size: 1.05rem;
+    }
 
-        article.post-item>.post-text>h5,
-        h6 {
-            font-size: 1rem;
-        }
+    article.post-item>.post-content>h5,
+    h6 {
+        font-size: 1rem;
+    }
 
-        article.post-item>.post-text>*:first-child {
-            margin-top: 0;
-        }
+    article.post-item>.post-content>*:first-child {
+        margin-top: 0;
+    }
 
-        /* ページャ */
-        ul#pager {
-            list-style-type: none;
-            padding-left: 0;
-        }
+    /* ページャ */
+    ul#pager {
+        list-style-type: none;
+        padding-left: 0;
+    }
 
-        ul#pager>li {
-            display: inline;
-        }
+    ul#pager>li {
+        display: inline;
+    }
 
-        ul#pager>li:first-child {
-            margin-right: 0.8rem;
-        }
+    ul#pager>li:first-child {
+        margin-right: 0.8rem;
+    }
 
-        ul#pager>li:last-child {
-            margin-left: 0.8rem;
-        }
+    ul#pager>li:last-child {
+        margin-left: 0.8rem;
+    }
 </style>
 
 <main layout:fragment="contents">
-        <div id="postform-wrap" th:fragment="postform-wrap" hx:swap-oob="true">
-            <form id="postform" hx:post="@{/post}" hx-target="#post-list" hx-trigger="createPost, submit"
-                th:object="${postForm}">
-                <div>
-                    <textarea id="postform-text" th:field="*{text}" autocomplete="off"></textarea>
-                    <br>
-                    <label for="postform-text" class="error" th:if="${#fields.hasErrors('text')}"
-                        th:errors="*{text}"></label>
-                </div>
-                <div>
-                    <button type="submit">submit</button>
-                </div>
-            </form>
-        </div>
-        <hr>
-        <div id="post-list" hx:swap="innerHTML">
-            <article th:fragment="post-item" th:each="post : ${posts}" class="post-item">
-                <div>
-                    <a th:href="@{|/post/${post.abbrevHash}|}" th:text="|#${post.abbrevHash}|"></a>
-                    <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                </div>
-                <div class="post-text"
-                    nishibi:render="${#strings.length(post.text) gt 120 ? #strings.substring(post.text, 0, 120) + '...' : post.text}">
-                </div>
-            </article>
-        </div>
-        <hr>
-        <aside>
-            <ul id="pager" th:fragment="pager" hx:swap-oob="true">
-                <li>
-                    <span th:if="${posts.first}">newest</span>
-                    <a th:if="${not posts.first}" hx:get="@{/post(page=0)}" hx-target="#post-list">newest</a>
-                </li>
-                <li th:if="${posts.hasPrevious()}">
-                    <a hx:get="@{/post(page=${posts.number}-1)}" hx-target="#post-list" th:text="${posts.number}-1"></a>
-                </li>
-                <li th:text="${posts.number}"></li>
-                <li class="current" th:if="${posts.hasNext()}">
+    <div id="postform-wrap" th:fragment="postform-wrap" hx:swap-oob="true">
+        <form id="postform" hx:post="@{/post}" hx-target="#post-list" hx-trigger="createPost, submit"
+            th:object="${postForm}">
+            <div>
+                <textarea id="postform-content" th:field="*{content}" autocomplete="off"></textarea>
+                <br>
+                <label for="postform-content" class="error" th:if="${#fields.hasErrors('content')}"
+                    th:errors="*{content}"></label>
+            </div>
+            <div>
+                <button type="submit">submit</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div id="post-list" hx:swap="innerHTML">
+        <article th:fragment="post-item" th:each="post : ${posts}" class="post-item">
+            <div>
+                <a th:href="@{|/post/${post.abbrevHash}|}" th:text="|#${post.abbrevHash}|"></a>
+                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+            </div>
+            <div class="post-content"
+                nishibi:render="${#strings.length(post.content) gt 120 ? #strings.substring(post.content, 0, 120) + '...' : post.content}">
+            </div>
+        </article>
+    </div>
+    <hr>
+    <aside>
+        <ul id="pager" th:fragment="pager" hx:swap-oob="true">
+            <li>
+                <span th:if="${posts.first}">newest</span>
+                <a th:if="${not posts.first}" hx:get="@{/post(page=0)}" hx-target="#post-list">newest</a>
+            </li>
+            <li th:if="${posts.hasPrevious()}">
+                <a hx:get="@{/post(page=${posts.number}-1)}" hx-target="#post-list" th:text="${posts.number}-1"></a>
+            </li>
+            <li th:text="${posts.number}"></li>
+            <li class="current" th:if="${posts.hasNext()}">
                 <a hx:get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list" th:text="${posts.number}+1"></a>
-                </li>
-                <li>
-                    <span th:if="${posts.last}">oldest</span>
-                    <a th:if="${not posts.last}" hx:get="@{/post(page=${posts.totalPages}-1)}"
-                        hx-target="#post-list">oldest</a>
-                </li>
-            </ul>
-        </aside>
+            </li>
+            <li>
+                <span th:if="${posts.last}">oldest</span>
+                <a th:if="${not posts.last}" hx:get="@{/post(page=${posts.totalPages}-1)}"
+                    hx-target="#post-list">oldest</a>
+            </li>
+        </ul>
+    </aside>
 </main>
 
 </html>

@@ -2,6 +2,7 @@ package cc.misononoa.nishibi.model.entity;
 
 import java.util.UUID;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,19 +23,20 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(schema = "public", name = "post_relation", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "postId", "relatedPostId" }) })
+        @UniqueConstraint(columnNames = { "post_id", "related_post_id" }) })
 public class PostRelation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     public UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "postId", referencedColumnName = "id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     public Post post;
 
     @ManyToOne
-    @JoinColumn(name = "relatedPostId", referencedColumnName = "id")
+    @JoinColumn(name = "related_post_id", referencedColumnName = "id")
     public Post relatedPost;
 
 }
