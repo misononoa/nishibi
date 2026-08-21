@@ -4,9 +4,8 @@
     xmlns:nishibi="http://nishibi.misononoa.cc/nishibi" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{layout}">
 
-<head>
-    <script src="/keyboard-shortcuts.js" th:nonce="${_nonce}"></script>
-    <style th:nonce="${_nonce}">
+<script layout:fragment="scripts" src="/keyboard-shortcuts.js" th:nonce="${_nonce}"></script>
+<style layout:fragment="styles" th:nonce="${_nonce}">
         /* 投稿フォーム */
         #postform-wrap>form {
             display: flex;
@@ -79,11 +78,9 @@
         ul#pager>li:last-child {
             margin-left: 0.8rem;
         }
-    </style>
-</head>
+</style>
 
-<body>
-    <main layout:fragment="content">
+<main layout:fragment="contents">
         <div id="postform-wrap" th:fragment="postform-wrap" hx:swap-oob="true">
             <form id="postform" hx:post="@{/post}" hx-target="#post-list" hx-trigger="createPost, submit"
                 th:object="${postForm}">
@@ -122,8 +119,7 @@
                 </li>
                 <li th:text="${posts.number}"></li>
                 <li class="current" th:if="${posts.hasNext()}">
-                    <a hx:get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list"
-                        th:text="${posts.number}+1"></a>
+                <a hx:get="@{/post(page=(${posts.number}+1))}" hx-target="#post-list" th:text="${posts.number}+1"></a>
                 </li>
                 <li>
                     <span th:if="${posts.last}">oldest</span>
@@ -132,7 +128,6 @@
                 </li>
             </ul>
         </aside>
-    </main>
-</body>
+</main>
 
 </html>

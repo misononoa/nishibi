@@ -5,15 +5,17 @@
 <head>
     <title th:text="#{app.title}"></title>
     <th:block th:replace="~{common::common-head}"></th:block>
+    <th:block layout:fragment="scripts"></th:block>
+    <th:block layout:fragment="styles"></th:block>
 </head>
 
 <body>
     <header>
         <h1 th:text="#{app.title}">layout</h1>
     </header>
-    <main layout:fragment="content">
+    <th:block layout:fragment="contents">
         <p>page content</p>
-    </main>
+    </th:block>
     <footer>
         <div layout:fragment="custom-footer"></div>
     </footer>

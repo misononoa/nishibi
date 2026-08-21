@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:nishibimd="http://nishibi.misononoa.cc/nishibimd">
+    xmlns:hx="http://wimdeblauwe.github.io/htmx-spring-boot-thymeleaf"
+    xmlns:nishibi="http://nishibi.misononoa.cc/nishibi" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
 
-<head>
-    <title th:text="#{app.title}"></title>
-    <th:block th:replace="~{common::common-head}" />
-</head>
-
-<style th:nonce="${_nonce}">
+<style layout:fragment="styles" th:nonce="${_nonce}">
     #post-detail>.post-text h1 {
         font-size: 1.6rem;
     }
@@ -61,9 +58,7 @@
     }
 </style>
 
-<body>
-    <h1 th:text="#{app.title}"></h1>
-    <main>
+<main layout:fragment="contents">
         <article th:fragment="post-detail" id="post-detail" class="post-detail">
             <div class="post-header">
                 <div th:text="|postHash: ${post.postHash}|"></div>
@@ -72,7 +67,7 @@
             <hr>
             <div class="post-text" nishibi:render="${post.text}"></div>
         </article>
-    </main>
+
     <aside class="relations" th:if="${!post.postRelations.isEmpty()}">
         <h2>
             <span style="font-size: 80%;">relations</span>
@@ -89,9 +84,9 @@
             </div>
         </article>
     </aside>
-    <footer>
+</main>
+<footer layout:fragment="custom-footer">
         <div><a href="/">&lt;&nbsp;top</a></div>
-    </footer>
-</body>
+</footer>
 
 </html>
