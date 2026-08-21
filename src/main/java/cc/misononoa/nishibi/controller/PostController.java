@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.FragmentsRendering;
 
-import cc.misononoa.nishibi.core.web.model.RequestInfo;
 import cc.misononoa.nishibi.model.form.PostForm;
 import cc.misononoa.nishibi.service.PostService;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
@@ -34,9 +32,8 @@ public class PostController {
     @PostMapping(path = "/post", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Object post(
             @Validated PostForm form,
-            @RequestAttribute("requestInfo") RequestInfo info,
             @RequestParam(name = "page", defaultValue = "0") Integer page) {
-        postsService.createPost(form, info);
+        postsService.createPost(form);
         var posts = postsService.getPosts(page);
         form.setContent("");
         return FragmentsRendering

@@ -28,12 +28,14 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostRelationRepository relationRepository;
 
+    private final RequestInfo info;
+
     @Transactional
-    public Post createPost(PostForm form, RequestInfo info) {
-        var hash = PostHashLogic.generate(form.getContent(), info.remoteAddr(), info.requestTime());
+    public Post createPost(PostForm form) {
+        var hash = PostHashLogic.generate(form.getContent(), info.getRemoteAddr(), info.getRequestTime());
         var p = Post.builder().content(form.getContent())
                 .postHash(hash)
-                .createdAt(LocalDateTime.ofInstant(info.requestTime(), info.timeZone()))
+                .createdAt(LocalDateTime.ofInstant(info.getRequestTime(), info.getTimeZone()))
                 .build();
         var result = postRepository.save(p);
         savePostRelation(result);
