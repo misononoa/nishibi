@@ -54,6 +54,13 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+val dotenv = DotEnv.load("${rootDir}/.env")
+
+tasks.withType<org.springframework.boot.gradle.tasks.run.BootRun> {
+	environment(dotenv)
+}
+
 tasks.withType<Test> {
+	environment(dotenv)
 	useJUnitPlatform()
 }
