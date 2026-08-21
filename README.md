@@ -4,7 +4,7 @@
 
 ## 構成
 
-- PostgreSQL 16
+- PostgreSQL 18
 - Spring Data JPA + JPA Hibernate
 - Spring Web MVC
   - Thymeleaf
