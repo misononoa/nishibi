@@ -1,4 +1,4 @@
-package cc.misononoa.nishibi.controller;
+package cc.misononoa.nishibi.core.web;
 
 import java.util.Optional;
 
@@ -14,42 +14,41 @@ import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRetarget;
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxSwapType;
 
 @ControllerAdvice
-public class GlobalErrorHandler {
+public class GlobalExceptionHandler {
 
     @HxRetarget("body")
     @HxReswap(HxSwapType.OUTER_HTML)
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView handleInternalServerError(RuntimeException ex) {
         ex.printStackTrace();
-        var rse = new ResponseStatusException(
+        return buildErrorMav(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                Optional.ofNullable(ex.getMessage()).orElse("内部エラーです。ごめんね。"),
-                ex);
-        return handleErrorResponse(rse);
+                Optional.ofNullable(ex.getMessage()).orElse("内部エラーです"),
+                false);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ModelAndView handleNoResourceFoundError(NoResourceFoundException ex) {
-        var rse = new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "ないよ",
-                ex);
-        return handleErrorResponse(rse);
+        return buildErrorMav(HttpStatus.NOT_FOUND, "ないよ", true);
     }
 
-    private static final String STATUS_FMT = "%03d %s";
-
-    @HxRetarget("html")
+    @HxRetarget("body")
     @HxReswap(HxSwapType.OUTER_HTML)
     @ExceptionHandler(ResponseStatusException.class)
     public ModelAndView handleErrorResponse(ResponseStatusException ex) {
-        final var status = HttpStatus.valueOf(ex.getStatusCode().value());
-        final var mav = new ModelAndView("error::errorBody", status);
-        final var errorTitle = STATUS_FMT.formatted(
+        return buildErrorMav(
+                HttpStatus.valueOf(ex.getStatusCode().value()),
+                ex.getReason(),
+                false);
+    }
+
+    private ModelAndView buildErrorMav(HttpStatus status, String msg, boolean wholeHtml) {
+        final var mav = new ModelAndView(wholeHtml ? "error" : "error::errorBody", status);
+        final var errorTitle = "%03d %s".formatted(
                 status.value(),
                 status.name().toLowerCase());
         mav.addObject("errorTitle", errorTitle);
-        mav.addObject("errorMessage", ex.getReason());
+        mav.addObject("errorMessage", msg);
         return mav;
     }
 
