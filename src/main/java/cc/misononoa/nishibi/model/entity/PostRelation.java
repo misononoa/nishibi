@@ -2,6 +2,9 @@ package cc.misononoa.nishibi.model.entity;
 
 import java.util.UUID;
 
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator.Style;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +30,7 @@ import lombok.NoArgsConstructor;
 public class PostRelation {
 
     @Id
+    @UuidGenerator(style = Style.VERSION_7)
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     public UUID id;

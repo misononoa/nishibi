@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.UuidGenerator.Style;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,6 +31,7 @@ import lombok.NoArgsConstructor;
 public class Post {
 
     @Id
+    @UuidGenerator(style = Style.VERSION_7)
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     public UUID id;
